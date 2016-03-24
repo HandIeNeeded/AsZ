@@ -7,4 +7,13 @@
 
 #ifndef _DATA_IO_WORKER_H
 #define _DATA_IO_WORKER_H
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+
+class DataIOWorker {
+public:
+    
+};
 #endif
