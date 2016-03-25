@@ -7,4 +7,9 @@
 
 #ifndef _TIME_UTILITY_H_
 #define _TIME_UTILITY_H_
+#include <ctime>
+
+class TimeHelper {
+
+};
 #endif

@@ -7,4 +7,9 @@
 
 #ifndef _ERROR_CODE_H_
 #define _ERROR_CODE_H_
+
+#define ASZ_SUCC 0
+#define ASZ_DEVIDE_BY_ZERO_ERROR 1
+#define ASZ_DEVIDE_BY_ZERO_WARNING -1
+
 #endif /* _ERROR_CODE_H_ */

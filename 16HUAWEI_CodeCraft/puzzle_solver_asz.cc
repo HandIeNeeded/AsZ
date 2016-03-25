@@ -2,6 +2,6 @@
 	> File Name: puzzle_solver_asz.cc
 	> Author: yuzhou627
 	> Mail:   yuzhou627@gmail.com
-	> created Time: Wed 16 Mar 2016 02:07:11 AM CST
- ************************************************************************/
+	> created Time: Fri 25 Mar 2016 11:26:25 AM CST
+*************************************************************************/
 
