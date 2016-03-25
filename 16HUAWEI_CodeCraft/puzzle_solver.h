@@ -7,12 +7,15 @@
 
 #ifndef _PUZZLE_SOLVER_H_
 #define _PUZZLE_SOLVER_H_
+
 #include "data_type.h"
 #include "data_io_helper.h"
 #include "time_utility.h"
 #include "test_data_generator.h"
 #include "solution_checker.h"
 #include "error_code.h"
+
+using namespace graph;
 
 class PuzzleSolver {
 public:
@@ -21,13 +24,18 @@ public:
 
     int Init();
 
-    int RunTest(int n);
+    int ReadGraphInfo(const std::string& graphFile, const std::string& nodeFile);
+
+    int RunOneTest();
+
+    int RunTests(int n);
 
     int Solve();
 
+    int Save(const std::string& s);
+
 private:
-    DirectedGraph mGraph;
-    DataIOHelper mDataIOHelper;
+    Graph<int, int, int, int> mGraph;
     TestDataGenerator mDataGenerator;
     SolutionChecker mSolutionChecker;
 };

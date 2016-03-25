@@ -21,12 +21,12 @@ public:
     TestDataGenerator();
     ~TestDataGenerator();
 
-    static inline int GenOneDataSet(std::string fileName);
+    static inline int GenOneDataSet(const std::string& fileName);
 
-    static inline int GenDataSets(std::vector<std::string> fileNames);
+    static inline int GenDataSets(const std::vector<std::string>& fileNames);
 };
 
-int TestDataGenerator::GenOneDataSet(std::string fileName) {
+int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     std::ios::sync_with_stdio(0);
     std::ofstream fout(fileName.c_str());
     //generator graph
@@ -35,12 +35,13 @@ int TestDataGenerator::GenOneDataSet(std::string fileName) {
     return ASZ_SUCC;
 }
 
-int TestDataGenerator::GenDataSets(std::vector<std::string> fileNames) {
+int TestDataGenerator::GenDataSets(const std::vector<std::string>& fileNames) {
     int rtn = ASZ_SUCC;
     for (auto &str: fileNames) {
         rtn = GenOneDataSet(str);
-        CHECK_RTN(rtn);
+        CHECK_RTN_LOGE(rtn);
     }
     return ASZ_SUCC;
 }
+
 #endif /* _TEST_DATA_GENERATOR_H_ */
