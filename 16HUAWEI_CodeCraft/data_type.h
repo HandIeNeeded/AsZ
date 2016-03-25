@@ -33,10 +33,13 @@ namespace graph {
     template<class TypeNode1, class TypeNode2, class TypeEdge1, class TypeEdge2>
     class Graph {
     public:
+        //node count, edge count
         int mNode, mEdge;
         std::vector<Node<TypeNode1, TypeNode2>> mNodes;
         std::vector<std::vector<Edge<TypeEdge1, TypeEdge2>>> mEdges;
+        //key nodes, have to cover
         std::vector<Node<TypeNode1, TypeNode2>> mKeyNodes;
+        //answer path
         std::vector<Edge<TypeEdge1, TypeEdge2>> mPaths;
     };
 }

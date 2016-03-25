@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
     CHECK_RTN_LOGE(rtn);
     rtn = asz.Solve();
     CHECK_RTN_LOGE(rtn);
-    rtn = asz.Save(argv[2]);
+    rtn = asz.Save(argv[3]);
     CHECK_RTN_LOGE(rtn);
     TimeHelper::CumulateStop("asz");
     std::cerr << "Puzzle solved!!!" << std::endl;
