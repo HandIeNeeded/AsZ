@@ -12,4 +12,7 @@
 #define ASZ_DEVIDE_BY_ZERO_ERROR 1
 #define ASZ_DEVIDE_BY_ZERO_WARNING -1
 
+
+#define CHECK_RTN(x) \
+
 #endif /* _ERROR_CODE_H_ */
