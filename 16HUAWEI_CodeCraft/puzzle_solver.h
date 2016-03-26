@@ -28,13 +28,11 @@ public:
 
     int RunTests(int n);
 
-    int Solve();
+    int Solve(bool& isSolutionExist);
 
     int Save(const std::string& fileName);
 
 private:
     Graph<int, int, int, int> mGraph;
-    TestDataGenerator mDataGenerator;
-    SolutionChecker mSolutionChecker;
 };
 #endif /* _PUZZLE_SOLVER_H_ */
