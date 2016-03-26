@@ -30,8 +30,6 @@ public:
 int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     //generator graph
     //use data_io_helper
-
-
     return ASZ_SUCC;
 }
 

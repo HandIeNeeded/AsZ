@@ -12,6 +12,8 @@
 int main(int argc, char **argv) {
     int rtn = ASZ_SUCC;
 
+    bool isSolutionExist;
+
     PuzzleSolver asz;
     TimeHelper::Init();
     TimeHelper::CumulateStart("asz");
@@ -19,7 +21,7 @@ int main(int argc, char **argv) {
         asz.Init();
         rtn = asz.ReadGraphInfo(argv[1], argv[2]);
         CHECK_RTN_LOGE(rtn);
-        rtn = asz.Solve();
+        rtn = asz.Solve(isSolutionExist);
         CHECK_RTN_LOGE(rtn);
         rtn = asz.Save(argv[3]);
         CHECK_RTN_LOGE(rtn);
@@ -35,4 +37,3 @@ int main(int argc, char **argv) {
 
     return ASZ_SUCC;
 }
-

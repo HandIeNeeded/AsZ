@@ -22,8 +22,10 @@ public:
     PuzzleSolver();
     ~PuzzleSolver();
 
-    int Init(const std::string& graphFile, const std::string& nodeFile);
+    int Init(); //temporary, to compile succ.
 
+    int ReadGraphInfo(const std::string& graphFile, const std::string& nodeFile);
+    
     int RunOneTest();
 
     int RunTests(int n);
@@ -35,4 +37,29 @@ public:
 private:
     Graph<int, int, int, int> mGraph;
 };
+
+int PuzzleSolver::Init() {
+    
+}
+
+int PuzzleSolver::ReadGraphInfo(const std::string& graphFile, const std::string& nodeFile) {
+    
+}
+
+int PuzzleSolver::RunOneTest() {
+}
+
+int PuzzleSolver::RunTests(int n) {
+
+}
+
+int PuzzleSolver::Solve(bool& isSolutionExist) {
+    
+}
+
+int PuzzleSolver::Save(const std::string& fileName) {
+    
+}
+
 #endif /* _PUZZLE_SOLVER_H_ */
+
