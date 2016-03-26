@@ -28,9 +28,8 @@ public:
 };
 
 int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
-    std::ios::sync_with_stdio(0);
-    std::ofstream fout(fileName.c_str());
     //generator graph
+    //use data_io_helper
 
 
     return ASZ_SUCC;
