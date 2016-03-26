@@ -18,8 +18,7 @@ int main(int argc, char **argv) {
     TimeHelper::Init();
     TimeHelper::CumulateStart("asz");
     if (argc == 3) {
-        asz.Init();
-        rtn = asz.ReadGraphInfo(argv[1], argv[2]);
+        rtn = asz.Init(argv[1], argv[2]);
         CHECK_RTN_LOGE(rtn);
         rtn = asz.Solve(isSolutionExist);
         CHECK_RTN_LOGE(rtn);
@@ -34,6 +33,7 @@ int main(int argc, char **argv) {
         rtn = asz.RunTests(5);
         CHECK_RTN_LOGE(rtn);
     }
+    asz.Ini();
 
     return ASZ_SUCC;
 }

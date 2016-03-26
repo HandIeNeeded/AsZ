@@ -1,4 +1,5 @@
-CC = g++ -g -w -std=c++11
+#set ( CMAKE_EXPORT_COMPILE_COMMANDS 1 )
+CC = g++ -g -Wall -O3 -std=c++11
 CFLAGS = -I include
 
 all: bin/puzzle_solver_asz
@@ -13,4 +14,4 @@ bin/puzzle_solver_asz.o: src/puzzle_solver_asz.cc include/puzzle_solver.h includ
 
 .PHONY: clean
 clean:
-	rm -f bin/*.o
+	rm -rf bin/*.o

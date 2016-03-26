@@ -21,11 +21,11 @@ class PuzzleSolver {
 public:
     //PuzzleSolver();
     //~PuzzleSolver();
-
-    int Init(); //temporary, to compile succ.
-
-    int ReadGraphInfo(const std::string& graphFile, const std::string& nodeFile);
     
+    int Init();
+
+    int Init(const std::string& graphFile, const std::string& nodeFile);
+
     int RunOneTest();
 
     int RunTests(int n);
@@ -39,11 +39,18 @@ private:
 };
 
 int PuzzleSolver::Init() {
-    
+    mGraph.Init();
+    return ASZ_SUCC;
 }
 
-int PuzzleSolver::ReadGraphInfo(const std::string& graphFile, const std::string& nodeFile) {
-    
+int PuzzleSolver::Init(const std::string& graphFile, const std::string& nodeFile) {
+    int rtn = ASZ_SUCC;
+    Init();
+    rtn = mGraph.ReadGraphInfo(graphFile);
+    CHECK_RTN_LOGE(rtn);
+    rtn = mGraph.ReadKeyNodesInfo(nodeFile);
+    CHECK_RTN_LOGE(rtn);
+    return ASZ_SUCC;
 }
 
 int PuzzleSolver::RunOneTest() {
@@ -57,8 +64,9 @@ int PuzzleSolver::Solve(bool& isSolutionExist) {
     
 }
 
-int PuzzleSolver::Save(const std::string& fileName) {
-    
+int PuzzleSolver::Save(const std::string& outputFile) {
+    mGraph.SavePathsInfo(outputFile);
+    return ASZ_SUCC;
 }
 
 #endif /* _PUZZLE_SOLVER_H_ */

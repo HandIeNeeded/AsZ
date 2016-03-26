@@ -34,20 +34,22 @@ int SolutionChecker::Init(Graph<int, int, int, int>* pGraph) {
 }
 
 int SolutionChecker::IsCorrect(const std::vector<Edge<int, int>>& answer, bool& isCorrect) {
-    int rtn = ASZ_SUCC;
-    //no edge error
+    //no edge
     if (answer.size() == 0) {
         isCorrect = false;
         return ASZ_SOLUTION_CHECKER_NO_EDGE_ERROR;
     }
+    //not correct start point
     if (answer.front().start != mpGraph->mSource) {
         isCorrect = false;
         return ASZ_SOLUTION_CHECKER_INVALID_START_POINT_ERROR;
     }
+    //not correct end point
     if (answer.back().end != mpGraph->mSink) {
         isCorrect = false;
         return ASZ_SOLUTION_CHECKER_INVALID_END_POINT_ERROR;
     }
+    //path not connected
     mMarkMap[mpGraph->mSource] = 1;
     int previousNode = mpGraph->mSource;
     for (int i = 0; i < int(answer.size()); i++) {
@@ -62,6 +64,7 @@ int SolutionChecker::IsCorrect(const std::vector<Edge<int, int>>& answer, bool& 
         previousNode = answer[i].end;
         mMarkMap.set(answer[i].end);
     }
+    //not cover all key points
     for (auto& node: mpGraph->mKeyNodes) {
         if (!mMarkMap.test(node)) {
             isCorrect = false;

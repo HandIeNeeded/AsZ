@@ -63,6 +63,10 @@ public:
         return x;
     }
 
+    static inline void WriteOneString(const std::string& str) {
+        mFileOutStream << str;
+    }
+
     static inline void WriteOneChar(char c) {
         mFileOutStream << c;
     }

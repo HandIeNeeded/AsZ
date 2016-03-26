@@ -38,7 +38,7 @@ private:
     static std::map<std::string, std::uint64_t> mTimeStamps;
 };
 
-
+//without this, undefined reference
 std::map<std::string, std::uint64_t> TimeHelper::mMonitorIncidentsStart;
 std::map<std::string, std::uint64_t> TimeHelper::mMonitorIncidentsStop;
 std::map<std::string, std::uint64_t> TimeHelper::mTimeStamps;
@@ -91,7 +91,6 @@ int TimeHelper::GetTimeSinceStampInSec(const std::string& timeStamp, double& tim
     std::uint64_t cost = 0;
     int rtn = GetTimeSinceStamp(timeStamp, cost);
     CHECK_RTN_LOGE(rtn);
-
     time = 1.0 * cost / CLOCKS_PER_SEC;
     return ASZ_SUCC;
 }

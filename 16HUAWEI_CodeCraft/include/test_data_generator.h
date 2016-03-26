@@ -19,9 +19,6 @@
 
 class TestDataGenerator {
 public:
-    TestDataGenerator();
-    ~TestDataGenerator();
-
     static inline int GenOneDataSet(const std::string& fileName);
 
     static inline int GenDataSets(const std::vector<std::string>& fileNames);

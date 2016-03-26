@@ -82,8 +82,7 @@ namespace graph {
                 }
             }
             else {
-                DataIOHelper::WriteOneChar('N');
-                DataIOHelper::WriteOneChar('A');
+                DataIOHelper::WriteOneString("NA");
             }
             DataIOHelper::Close();
             return ASZ_SUCC;
@@ -101,8 +100,10 @@ namespace graph {
         std::vector<int> mKeyNodes;
         //answer path
         std::vector<Edge<TypeEdge1, TypeEdge2>> mPaths;
-        //mark map
+        //is visited mark map
         std::bitset<MAX_NODE> mMarkMap;
+        //is key point mark map
+        std::bitset<MAX_NODE> mKeyNodesMap;
     };
 }
 
