@@ -15,15 +15,23 @@ int main(int argc, char **argv) {
     PuzzleSolver asz;
     TimeHelper::Init();
     TimeHelper::CumulateStart("asz");
-    rtn = asz.ReadGraphInfo(argv[1], argv[2]);
-    CHECK_RTN_LOGE(rtn);
-    rtn = asz.Solve();
-    CHECK_RTN_LOGE(rtn);
-    rtn = asz.Save(argv[3]);
-    CHECK_RTN_LOGE(rtn);
-    TimeHelper::CumulateStop("asz");
-    std::cerr << "Puzzle solved!!!" << std::endl;
-    TimeHelper::ShowAllMonitorIncidentsInfo();
+    if (argc == 3) {
+        asz.Init();
+        rtn = asz.ReadGraphInfo(argv[1], argv[2]);
+        CHECK_RTN_LOGE(rtn);
+        rtn = asz.Solve();
+        CHECK_RTN_LOGE(rtn);
+        rtn = asz.Save(argv[3]);
+        CHECK_RTN_LOGE(rtn);
+        TimeHelper::CumulateStop("asz");
+        std::cerr << "Puzzle solved!!!" << std::endl;
+        TimeHelper::ShowAllMonitorIncidentsInfo();
+    }
+    else {
+        asz.Init();
+        rtn = asz.RunTests(5);
+        CHECK_RTN_LOGE(rtn);
+    }
 
     return ASZ_SUCC;
 }

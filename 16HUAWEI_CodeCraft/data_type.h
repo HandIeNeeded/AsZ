@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <string>
+#include <bitset>
 #include <map>
 #include <set>
 #include "data_io_helper.h"
@@ -27,24 +28,81 @@ namespace graph {
     template<class Type1, class Type2>
     struct Node {
         Type1 inDegree, outDegree;
-        Type2 importance;
-        Node (Type2 importance): inDegree(0), outDegree(0), importance(importance) {}
-        Node (Type1 in, Type1 out, Type2 importance): inDegree(in), outDegree(out), importance(importance) {}
+        Type2 priority;
+        Node (Type2 priority): inDegree(0), outDegree(0), priority(priority) {}
+        Node (Type1 in, Type1 out, Type2 priority): inDegree(in), outDegree(out), priority(priority) {}
     };
 
     template<class TypeNode1, class TypeNode2, class TypeEdge1, class TypeEdge2>
     class Graph {
     public:
+        int Init() {
+            mIsSolutionExist = false;
+            mEdges.clear();
+            mNodes.clear();
+            mKeyNodes.clear();
+            mPaths.clear();
+            mNode = mEdge = 0;
+            mSource = mSink = 0;
+            mMarkMap.reset();
+            return ASZ_SUCC;
+        }
+
+        int ReadGraphInfo(const std::string& graphFile) {
+            DataIOHelper::InitInput(graphFile);
+            while (!DataIOHelper::IsReachEoF()) {
+                int index = DataIOHelper::ReadOneInteger();
+                int start = DataIOHelper::ReadOneInteger();
+                int end = DataIOHelper::ReadOneInteger();
+                int length = DataIOHelper::ReadOneInteger();
+                mEdges[start].push_back(Edge<TypeEdge1, TypeEdge2>(start, end, index, length));
+            }
+            return ASZ_SUCC;
+        }
+
+        int ReadKeyNodesInfo(const std::string& nodeFile) {
+            DataIOHelper::InitInput(nodeFile);
+            mSource = DataIOHelper::ReadOneInteger();
+            mSink = DataIOHelper::ReadOneInteger();
+            while (!DataIOHelper::IsReachEoF()) {
+                int x = DataIOHelper::ReadOneInteger();
+                mKeyNodes.push_back(x);
+            }
+            return ASZ_SUCC;
+        }
+
+        int SavePathsInfo(const std::string& outputFile) {
+            DataIOHelper::InitOutput(outputFile);
+            if (mIsSolutionExist) {
+                bool first = false;
+                for(auto& edge: mPaths) {
+                    if (first) DataIOHelper::WriteOneChar('|');
+                    DataIOHelper::WriteOneInterger(edge.index);
+                    first = true;
+                }
+            }
+            else {
+                DataIOHelper::WriteOneChar('N');
+                DataIOHelper::WriteOneChar('A');
+            }
+            DataIOHelper::Close();
+            return ASZ_SUCC;
+        }
+
+    public:
+        bool mIsSolutionExist;
         //node count, edge count
         int mNode, mEdge;
         //start point, destination
-        int source, sink;
+        int mSource, mSink;
         std::vector<Node<TypeNode1, TypeNode2>> mNodes;
         std::vector<std::vector<Edge<TypeEdge1, TypeEdge2>>> mEdges;
         //key nodes, have to cover
         std::vector<int> mKeyNodes;
         //answer path
         std::vector<Edge<TypeEdge1, TypeEdge2>> mPaths;
+        //mark map
+        std::bitset<MAX_NODE> mMarkMap;
     };
 }
 

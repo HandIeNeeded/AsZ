@@ -22,9 +22,7 @@ public:
     PuzzleSolver();
     ~PuzzleSolver();
 
-    int Init();
-
-    int ReadGraphInfo(const std::string& graphFile, const std::string& nodeFile);
+    int Init(const std::string& graphFile, const std::string& nodeFile);
 
     int RunOneTest();
 
@@ -32,7 +30,7 @@ public:
 
     int Solve();
 
-    int Save(const std::string& s);
+    int Save(const std::string& fileName);
 
 private:
     Graph<int, int, int, int> mGraph;

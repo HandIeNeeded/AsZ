@@ -14,17 +14,35 @@
 
 class DataIOHelper {
 public:
-    int Init(const std::string& input, const std::string& output) {
+    static int Init(const std::string& input, const std::string& output) {
         std::ios::sync_with_stdio(0);
         mFileInStream.open(input.c_str());
         mFileOutStream.open(output.c_str());
         return ASZ_SUCC;
     }
+
+    static int InitInput(const std::string& input) {
+        std::ios::sync_with_stdio(0);
+        mFileInStream.close();
+        mFileInStream.open(input.c_str());
+        return ASZ_SUCC;
+    }
+
+    static int InitOutput(const std::string& output) {
+        std::ios::sync_with_stdio(0);
+        mFileOutStream.close();
+        mFileOutStream.open(output.c_str());
+        return ASZ_SUCC;
+    }
     
-    int Close() {
+    static int Close() {
         mFileInStream.close();
         mFileOutStream.close();
         return ASZ_SUCC;
+    }
+
+    static bool IsReachEoF() {
+        return mFileInStream.eof();
     }
 
     static inline char ReadOneChar() {

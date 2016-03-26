@@ -57,6 +57,7 @@ int TimeHelper::ShowAllMonitorIncidentsInfo() {
         stampEnd = mMonitorIncidentsStop[name];
         std::cerr << "Time Monitor: [" << name << "] use " << std::fixed << std::setprecision(6) << 1.0 * (stampEnd - stampStart) / CLOCKS_PER_SEC << "sec." << std::endl;
     }
+    return ASZ_SUCC;
 }
 
 void TimeHelper::SetUpTimeStamp(const std::string& timeStamp) {
@@ -90,4 +91,4 @@ int TimeHelper::GetTimeSinceStampInSec(const std::string& timeStamp, double& tim
     return ASZ_SUCC;
 }
 
-#endif
+#endif /* _TIME_UTILITY_H_ */
