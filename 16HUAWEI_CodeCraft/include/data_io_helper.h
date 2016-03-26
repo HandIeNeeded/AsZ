@@ -85,4 +85,7 @@ private:
     static std::ifstream mFileInStream;
     static std::ofstream mFileOutStream;
 };
+
+std::ifstream DataIOHelper::mFileInStream;
+std::ofstream DataIOHelper::mFileOutStream;
 #endif /* _DATA_IO_HELPER_H_ */

@@ -54,14 +54,18 @@ int PuzzleSolver::Init(const std::string& graphFile, const std::string& nodeFile
 }
 
 int PuzzleSolver::RunOneTest() {
+
+    return ASZ_SUCC;
 }
 
 int PuzzleSolver::RunTests(int n) {
 
+    return ASZ_SUCC;
 }
 
 int PuzzleSolver::Solve(bool& isSolutionExist) {
     
+    return ASZ_SUCC;
 }
 
 int PuzzleSolver::Save(const std::string& outputFile) {

@@ -33,7 +33,6 @@ int main(int argc, char **argv) {
         rtn = asz.RunTests(5);
         CHECK_RTN_LOGE(rtn);
     }
-    asz.Ini();
 
     return ASZ_SUCC;
 }
