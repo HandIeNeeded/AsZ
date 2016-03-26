@@ -26,9 +26,12 @@
 #define ASZ_TIME_NO_MONITOR_INCIDENT_ERROR -1001
 #define ASZ_TIME_NO_MONITOR_INCIDENT_WARNING 1001
 
+//[2000-3000) solution checker
+#define 
+
 #define STRINGIFY(x) #x
 #define CHECK_RTN_LOGE(x) if(x == ASZ_SUCC); else {std::cerr << "[" << __FILE__ << "] Line: " << __LINE__ << ": return error code " << x << " " << PRINTREADABLEINFO(x) << std::endl; return x;}
-#define CHECK_RTN_LOGW(x) if(x == ASZ_SUCC); else {std::cerr << "[" << __FILE__ << "] Line: " << __LINE__ << ": return error code " << x << " " << PRINTREADABLEINFO(x) << std::endl;} 
+#define CHECK_RTN_LOGW(x) if(x == ASZ_SUCC); else {std::cerr << "[" << __FILE__ << "] Line: " << __LINE__ << ": return warning code " << x << " " << PRINTREADABLEINFO(x) << std::endl;} 
 
 static inline std::string PRINTREADABLEINFO(int x) {
     switch (x) {
