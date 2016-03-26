@@ -38,6 +38,11 @@ private:
     static std::map<std::string, std::uint64_t> mTimeStamps;
 };
 
+
+std::map<std::string, std::uint64_t> TimeHelper::mMonitorIncidentsStart;
+std::map<std::string, std::uint64_t> TimeHelper::mMonitorIncidentsStop;
+std::map<std::string, std::uint64_t> TimeHelper::mTimeStamps;
+
 int TimeHelper::Init() {
     mMonitorIncidentsStart.clear();
     mMonitorIncidentsStop.clear();
