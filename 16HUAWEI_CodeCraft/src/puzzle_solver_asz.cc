@@ -12,8 +12,6 @@
 int main(int argc, char **argv) {
     int rtn = ASZ_SUCC;
 
-    bool isSolutionExist;
-
     PuzzleSolver asz;
     TimeHelper::Init();
     TimeHelper::CumulateStart("asz");
@@ -21,14 +19,13 @@ int main(int argc, char **argv) {
     if (argc == 3) {
         rtn = asz.Init(argv[1], argv[2]);
         CHECK_RTN_LOGE(rtn);
-        rtn = asz.Solve(isSolutionExist);
+        rtn = asz.Solve();
         CHECK_RTN_LOGE(rtn);
         rtn = asz.Save(argv[3]);
         CHECK_RTN_LOGE(rtn);
         std::cerr << "Puzzle solved!!!" << std::endl;
     }
     else {
-        asz.Init();
         rtn = asz.RunTests(5);
         CHECK_RTN_LOGE(rtn);
     }

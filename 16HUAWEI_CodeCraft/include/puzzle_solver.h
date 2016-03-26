@@ -26,11 +26,11 @@ public:
 
     int Init(const std::string& graphFile, const std::string& nodeFile);
 
-    int RunOneTest();
+    int RunOneTest(const std::string& testName);
 
     int RunTests(int n);
 
-    int Solve(bool& isSolutionExist);
+    int Solve();
 
     int Save(const std::string& fileName);
 
@@ -53,17 +53,34 @@ int PuzzleSolver::Init(const std::string& graphFile, const std::string& nodeFile
     return ASZ_SUCC;
 }
 
-int PuzzleSolver::RunOneTest() {
-
+int PuzzleSolver::RunOneTest(const std::string& testName) {
+    int rtn = TestDataGenerator::GenOneDataSet(testName);
+    CHECK_RTN_LOGE(rtn);
+    std::string commandLine = "mkdir -p " + testName;
+    system(commandLine.c_str());
+    rtn = mGraph.ReadGraphInfo(testName + "/topo.csv");
+    CHECK_RTN_LOGE(rtn);
+    rtn = mGraph.ReadKeyNodesInfo(testName + "/demand.csv");
+    CHECK_RTN_LOGE(rtn);
+    Solve();
+    CHECK_RTN_LOGE(rtn);
+    Save(testName + "/asz_result.csv");
+    CHECK_RTN_LOGE(rtn);
     return ASZ_SUCC;
 }
 
 int PuzzleSolver::RunTests(int n) {
-
+    int rtn = ASZ_SUCC;
+    for (int i = 0; i < n; i++) {
+        std::string testName = "./batch_test_" + std::to_string(i);
+        Init();
+        rtn = RunOneTest(testName);
+        CHECK_RTN_LOGE(rtn);
+    }
     return ASZ_SUCC;
 }
 
-int PuzzleSolver::Solve(bool& isSolutionExist) {
+int PuzzleSolver::Solve() {
     
     return ASZ_SUCC;
 }
