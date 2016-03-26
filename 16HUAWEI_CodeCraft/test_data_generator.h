@@ -15,6 +15,7 @@
 #include <vector>
 #include <string>
 #include "error_code.h"
+#include "data_io_helper.h"
 
 class TestDataGenerator {
 public:

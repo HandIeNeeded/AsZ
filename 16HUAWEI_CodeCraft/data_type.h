@@ -15,6 +15,8 @@
 #include "data_io_helper.h"
 
 namespace graph {
+    const int MAX_NODE = 700;
+    const int MAX_EDGE = 5000;
     template<class Type1, class Type2>
     struct Edge {
         Type1 start, end, index;
@@ -35,10 +37,12 @@ namespace graph {
     public:
         //node count, edge count
         int mNode, mEdge;
+        //start point, destination
+        int source, sink;
         std::vector<Node<TypeNode1, TypeNode2>> mNodes;
         std::vector<std::vector<Edge<TypeEdge1, TypeEdge2>>> mEdges;
         //key nodes, have to cover
-        std::vector<Node<TypeNode1, TypeNode2>> mKeyNodes;
+        std::vector<int> mKeyNodes;
         //answer path
         std::vector<Edge<TypeEdge1, TypeEdge2>> mPaths;
     };
