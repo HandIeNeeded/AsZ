@@ -40,16 +40,16 @@ int SolutionChecker::IsCorrect(const std::vector<Edge<int, int>>& answer, bool& 
         isCorrect = false;
         return ASZ_SOLUTION_CHECKER_NO_EDGE_ERROR;
     }
-    if (answer.front().start != mpGraph->source) {
+    if (answer.front().start != mpGraph->mSource) {
         isCorrect = false;
         return ASZ_SOLUTION_CHECKER_INVALID_START_POINT_ERROR;
     }
-    if (answer.back().end != mpGraph->sink) {
+    if (answer.back().end != mpGraph->mSink) {
         isCorrect = false;
         return ASZ_SOLUTION_CHECKER_INVALID_END_POINT_ERROR;
     }
-    mMarkMap[mpGraph->source] = 1;
-    int previousNode = mpGraph->source;
+    mMarkMap[mpGraph->mSource] = 1;
+    int previousNode = mpGraph->mSource;
     for (int i = 0; i < int(answer.size()); i++) {
         if (answer[i].start != previousNode) {
             isCorrect = false;

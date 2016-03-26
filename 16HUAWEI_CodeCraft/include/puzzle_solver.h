@@ -19,8 +19,8 @@ using namespace graph;
 
 class PuzzleSolver {
 public:
-    PuzzleSolver();
-    ~PuzzleSolver();
+    //PuzzleSolver();
+    //~PuzzleSolver();
 
     int Init(); //temporary, to compile succ.
 
