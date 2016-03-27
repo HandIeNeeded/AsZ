@@ -51,13 +51,18 @@ namespace graph {
 
         int ReadGraphInfo(const std::string& graphFile) {
             DataIOHelper::InitInput(graphFile);
+            mEdges.resize(MAX_NODE);
             while (!DataIOHelper::IsReachEoF()) {
                 int index = DataIOHelper::ReadOneInteger();
                 int start = DataIOHelper::ReadOneInteger();
                 int end = DataIOHelper::ReadOneInteger();
+                mMarkMap.set(start), mMarkMap.set(end);
                 int length = DataIOHelper::ReadOneInteger();
                 mEdges[start].push_back(Edge<TypeEdge1, TypeEdge2>(start, end, index, length));
+                mEdge++;
             }
+            mNode = mMarkMap.count();
+            mMarkMap.reset();
             return ASZ_SUCC;
         }
 
@@ -84,19 +89,16 @@ namespace graph {
                 }
             }
             else {
-                DataIOHelper::WriteOneString("NA");
+                DataIOHelper::WriteOneString("NA\n");
             }
             DataIOHelper::Close();
             return ASZ_SUCC;
         }
 
         int BruteForce(int& pathLength) {
-
             InitAnswer();
-
             pathLength = 0;
-            int rtn = FindPath(mSource, pathLength);
-            //assume that always have an answer
+            FindPath(mSource, pathLength);
             return ASZ_SUCC;
         }
 

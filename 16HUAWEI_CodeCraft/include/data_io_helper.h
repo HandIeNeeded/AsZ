@@ -15,6 +15,7 @@
 class DataIOHelper {
 public:
     static int Init(const std::string& input, const std::string& output) {
+        Close();
         mFileInStream.open(input.c_str());
         mFileOutStream.open(output.c_str());
         return ASZ_SUCC;
@@ -22,12 +23,14 @@ public:
 
     static int InitInput(const std::string& input) {
         mFileInStream.close();
+        std::cerr << "Open input file: " << input << std::endl;
         mFileInStream.open(input.c_str());
         return ASZ_SUCC;
     }
 
     static int InitOutput(const std::string& output) {
         mFileOutStream.close();
+        std::cerr << "Open output file: " << output << std::endl;
         mFileOutStream.open(output.c_str());
         return ASZ_SUCC;
     }
@@ -50,13 +53,8 @@ public:
 
     static inline int ReadOneInteger() {
         int x = 0;
-        char c;
-        while (mFileInStream >> c) {
-            if (std::isdigit(c)) {
-                x = 10 * x + c - '0';
-            }
-            else break;
-        }
+        mFileInStream >> x;
+        mFileInStream.ignore(1, '\n');
         std::cerr << x << std::endl;
         return x;
     }
