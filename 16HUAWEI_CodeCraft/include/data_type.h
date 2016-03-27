@@ -58,6 +58,15 @@ namespace graph {
                 int end = DataIOHelper::ReadOneInteger();
                 mMarkMap.set(start), mMarkMap.set(end);
                 int length = DataIOHelper::ReadOneInteger();
+                bool edgeExisted = false;
+                for (auto &edge: mEdges[start]) {
+                    if (edge.end == end) {
+                        edgeExisted = true;
+                        if (length < edge.length)
+                            edge.length = length;
+                    }
+                }
+                if (edgeExisted) continue;
                 mEdges[start].push_back(Edge<TypeEdge1, TypeEdge2>(start, end, index, length));
                 mEdge++;
             }
