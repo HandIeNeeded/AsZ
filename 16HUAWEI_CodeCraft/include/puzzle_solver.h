@@ -21,7 +21,7 @@ class PuzzleSolver {
 public:
     //PuzzleSolver();
     //~PuzzleSolver();
-    
+
     int Init();
 
     int Init(const std::string& graphFile, const std::string& nodeFile);
@@ -62,7 +62,7 @@ int PuzzleSolver::RunOneTest(const std::string& testName) {
     CHECK_RTN_LOGE(rtn);
     rtn = mGraph.ReadKeyNodesInfo(testName + "/demand.csv");
     CHECK_RTN_LOGE(rtn);
-    Solve();
+    rtn = Solve();
     CHECK_RTN_LOGE(rtn);
     Save(testName + "/asz_result.csv");
     CHECK_RTN_LOGE(rtn);
@@ -81,7 +81,11 @@ int PuzzleSolver::RunTests(int n) {
 }
 
 int PuzzleSolver::Solve() {
-    
+    int ans = BruteForce();
+    if (ans == -1)
+        std::cout << "No Path" << std::endl;
+    else
+        std::cout << "Find a path " << ans << std::endl;
     return ASZ_SUCC;
 }
 

@@ -91,7 +91,7 @@ namespace graph {
             return ASZ_SUCC;
         }
 
-        int BruteForce(vector<Edge<TypeEdge1, TypeEdge2>>& path, int& pathLength) {
+        int BruteForce(int& pathLength) {
 
             InitAnswer();
 
@@ -100,7 +100,9 @@ namespace graph {
             CHECK_RTN_LOGE(rtn);
 
             pathLength = 0;
-            FindPath(mSource, pathLength);
+            rtn = FindPath(mSource, pathLength);
+            if (rtn == -1) pathLength = -1;
+            return pathLength;
         }
 
     private:
@@ -120,14 +122,14 @@ namespace graph {
         }
 
         int FindPath(int currentNode, int& pathLength) {
-            if (visitedNode.test(currentNode))
+            if (mMarkMap.test(currentNode))
                 return -1;
-            visitedNode.set(currentNode);
+            mMarkMap.set(currentNode);
             if (currentNode == mSink) {
-                if ((visitedNode & mKeyNodesMap) == mKeyNodesMap)
+                if ((mMarkMap & mKeyNodesMap) == mKeyNodesMap) {
                     return 0;
-                else {
-                    visitedNode.reset(currentNode);
+                } else {
+                    mMarkMap.reset(currentNode);
                     return -1;
                 }
             }
@@ -135,12 +137,14 @@ namespace graph {
                 nextNode = mEdges[i].end;
                 length = mEdges[i].length;
                 pathLength += length;
-                path.push_back(mEdges[i]);
+                mPaths.push_back(mEdges[i]);
                 if (FindPath(nextNode, pathLength) == 0)
                     return 0;
-                path.pop_back();
+                mPaths.pop_back();
                 pathLength -= length;
             }
+            mMarkMap.set(currentNode);
+            return -1;
         }
 
         bool mIsSolutionExist;
