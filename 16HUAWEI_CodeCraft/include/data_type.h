@@ -46,7 +46,6 @@ namespace graph {
             mSource = mSink = 0;
             mMarkMap.reset();
             mKeyNodesMap.reset();
-            mAdjacencyListBuilt = false;
             return ASZ_SUCC;
         }
 
@@ -95,66 +94,19 @@ namespace graph {
 
             InitAnswer();
 
-            int rtn = ASZ_SUCC;
-            rtn = BuildAdjacencyList();
-            CHECK_RTN_LOGE(rtn);
-
             pathLength = 0;
-            rtn = FindPath(mSource, pathLength);
-            if (rtn == -1) pathLength = -1;
-            return pathLength;
-        }
-
-    private:
-
-        int InitAnswer() {
-            mMarkMap.reset();
-            mPaths.clear();
+            int rtn = FindPath(mSource, pathLength);
+            //assume that always have an answer
             return ASZ_SUCC;
         }
 
-        int BuildAdjacencyList() {
-            if (mEdges.size() == 0) return ASZ_SOLUTION_CHECKER_NO_EDGE_ERROR;
-            if (mAdjacencyListBuilt) return ASZ_SUCC;
-            for (unsigned int i = 0; i < mEdge; i++)
-                mAdjacencyList[mEdges[i].start].push_back(i);
-            mAdjacencyListBuilt = true;
-            return ASZ_SUCC;
-        }
-
-        int FindPath(int currentNode, int& pathLength) {
-            if (mMarkMap.test(currentNode))
-                return -1;
-            mMarkMap.set(currentNode);
-            if (currentNode == mSink) {
-                if ((mMarkMap & mKeyNodesMap) == mKeyNodesMap) {
-                    return 0;
-                } else {
-                    mMarkMap.reset(currentNode);
-                    return -1;
-                }
-            }
-            for (auto &i: mAdjacencyList[currentNode]) {
-                nextNode = mEdges[i].end;
-                length = mEdges[i].length;
-                pathLength += length;
-                mPaths.push_back(mEdges[i]);
-                if (FindPath(nextNode, pathLength) == 0)
-                    return 0;
-                mPaths.pop_back();
-                pathLength -= length;
-            }
-            mMarkMap.set(currentNode);
-            return -1;
-        }
+    public:
 
         bool mIsSolutionExist;
         //node count, edge count
         int mNode, mEdge;
         //start point, destination
         int mSource, mSink;
-        //whether adjacency list built
-        bool mAdjacencyListBuilt;
         std::vector<Node<TypeNode1, TypeNode2>> mNodes;
         std::vector<std::vector<Edge<TypeEdge1, TypeEdge2>>> mEdges;
         //key nodes, have to cover
@@ -165,8 +117,40 @@ namespace graph {
         std::bitset<MAX_NODE> mMarkMap;
         //is key point mark map
         std::bitset<MAX_NODE> mKeyNodesMap;
-        //adjacency list
-        std::vector<int> mAdjacencyList[MAX_NODE];
+
+    private:
+
+        int InitAnswer() {
+            mMarkMap.reset();
+            mPaths.clear();
+            return ASZ_SUCC;
+        }
+
+        int FindPath(int currentNode, int& pathLength) {
+            if (mMarkMap.test(currentNode))
+                return -1;
+            mMarkMap.set(currentNode);
+            if (currentNode == mSink) {
+                if ((mMarkMap & mKeyNodesMap) == mKeyNodesMap) {
+                    return ASZ_SUCC;
+                } else {
+                    mMarkMap.reset(currentNode);
+                    return -1;
+                }
+            }
+            for (auto &edge: mEdges[currentNode]) {
+                TypeEdge1 nextNode = edge.end;
+                TypeEdge2 length = edge.length;
+                pathLength += length;
+                mPaths.push_back(edge);
+                if (FindPath(nextNode, pathLength) == 0)
+                    return ASZ_SUCC;
+                mPaths.pop_back();
+                pathLength -= length;
+            }
+            mMarkMap.reset(currentNode);
+            return -1;
+        }
     };
 }
 

@@ -81,11 +81,10 @@ int PuzzleSolver::RunTests(int n) {
 }
 
 int PuzzleSolver::Solve() {
-    int ans = BruteForce();
-    if (ans == -1)
-        std::cout << "No Path" << std::endl;
-    else
-        std::cout << "Find a path " << ans << std::endl;
+    int ans;
+    mGraph.BruteForce(ans);
+    //assume that the answer exists
+    std::cout << "Find a path " << ans << std::endl;
     return ASZ_SUCC;
 }
 
