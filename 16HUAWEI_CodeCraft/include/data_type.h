@@ -87,6 +87,7 @@ namespace graph {
                     DataIOHelper::WriteOneInterger(edge.index);
                     first = true;
                 }
+                DataIOHelper::WriteOneChar('\n');
             }
             else {
                 DataIOHelper::WriteOneString("NA\n");
