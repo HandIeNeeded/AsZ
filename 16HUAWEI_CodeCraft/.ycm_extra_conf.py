@@ -39,7 +39,7 @@ import ycm_core
 # CHANGE THIS LIST OF FLAGS. YES, THIS IS THE DROID YOU HAVE BEEN LOOKING FOR.
 flags = [
 '-I/usr/include/c++/4.9',
-'-I/home/yuzhou627/AsZ/16HUAWEI_CodeCraft/include',
+'-I/home/yuzhou627/AsZ/16HUAWEI_CodeCraft/future_net/include',
 '-Wall',
 '-DHOME',
 '-O3',

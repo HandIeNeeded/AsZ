@@ -11,6 +11,3 @@ bin/puzzle_solver_asz: src/puzzle_solver_asz.cc
 #	@mkdir -p bin
 #	$(CC) $(CFLAGS) -c -o $@ $<
 
-.PHONY: clean
-clean:
-	@rm -rf bin/*
