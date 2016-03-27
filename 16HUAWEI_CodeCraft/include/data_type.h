@@ -95,6 +95,15 @@ namespace graph {
             return ASZ_SUCC;
         }
 
+        int PrintNodePath() {
+            std::cerr << "Path of nodes:\n" << mSource;
+            for (auto &edge: mPaths) {
+                std::cerr << ", " << edge.end;
+            }
+            std::cerr << std::endl;
+            return ASZ_SUCC;
+        }
+
         int BruteForce(int& pathLength) {
             InitAnswer();
             pathLength = 0;

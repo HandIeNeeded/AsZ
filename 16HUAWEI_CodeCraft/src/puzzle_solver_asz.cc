@@ -8,6 +8,7 @@
 #include "puzzle_solver.h"
 #include "error_code.h"
 #include "time_utility.h"
+#include "solution_checker.h"
 
 int main(int argc, char **argv) {
     int rtn = ASZ_SUCC;
@@ -19,7 +20,7 @@ int main(int argc, char **argv) {
     if (argc == 4) {
         rtn = asz.Init(argv[1], argv[2]);
         CHECK_RTN_LOGE(rtn);
-        rtn = asz.Solve();
+        rtn = asz.Solve(true);
         CHECK_RTN_LOGE(rtn);
         rtn = asz.Save(argv[3]);
         CHECK_RTN_LOGE(rtn);

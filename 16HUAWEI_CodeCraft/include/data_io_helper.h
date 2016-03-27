@@ -55,7 +55,7 @@ public:
         int x = 0;
         mFileInStream >> x;
         mFileInStream.ignore(1, '\n');
-        std::cerr << x << std::endl;
+        //std::cerr << x << std::endl;
         return x;
     }
 

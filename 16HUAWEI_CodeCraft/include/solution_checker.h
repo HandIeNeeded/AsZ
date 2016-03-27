@@ -19,12 +19,15 @@ class SolutionChecker {
 public:
     static inline int Init(Graph<int, int, int, int>* pGraph);
 
-    static inline int IsCorrect(const std::vector<Edge<int, int>>& answer, bool& isCorrect);
+    static inline int IsCorrect(const std::vector<Edge<int, int>>& answer);
 
 private:
     static const Graph<int, int, int, int>* mpGraph;
     static std::bitset<graph::MAX_NODE> mMarkMap;
 };
+
+const Graph<int, int, int, int>* SolutionChecker::mpGraph;
+std::bitset<graph::MAX_NODE> SolutionChecker::mMarkMap;
 
 int SolutionChecker::Init(Graph<int, int, int, int>* pGraph) {
     if (pGraph == NULL) return ASZ_NULL_POINTER_ERROR;
@@ -33,20 +36,17 @@ int SolutionChecker::Init(Graph<int, int, int, int>* pGraph) {
     return ASZ_SUCC;
 }
 
-int SolutionChecker::IsCorrect(const std::vector<Edge<int, int>>& answer, bool& isCorrect) {
+int SolutionChecker::IsCorrect(const std::vector<Edge<int, int>>& answer) {
     //no edge
     if (answer.size() == 0) {
-        isCorrect = false;
         return ASZ_SOLUTION_CHECKER_NO_EDGE_ERROR;
     }
     //not correct start point
     if (answer.front().start != mpGraph->mSource) {
-        isCorrect = false;
         return ASZ_SOLUTION_CHECKER_INVALID_START_POINT_ERROR;
     }
     //not correct end point
     if (answer.back().end != mpGraph->mSink) {
-        isCorrect = false;
         return ASZ_SOLUTION_CHECKER_INVALID_END_POINT_ERROR;
     }
     //path not connected
@@ -54,11 +54,9 @@ int SolutionChecker::IsCorrect(const std::vector<Edge<int, int>>& answer, bool& 
     int previousNode = mpGraph->mSource;
     for (int i = 0; i < int(answer.size()); i++) {
         if (answer[i].start != previousNode) {
-            isCorrect = false;
             return ASZ_SOLUTION_CHECKER_PATH_NOT_CONNECTED_ERROR;
         }
         if (mMarkMap.test(answer[i].end)) {
-            isCorrect = false;
             return ASZ_SOLUTION_CHECKER_REPEAT_NODES_ERROR;
         }
         previousNode = answer[i].end;
@@ -67,11 +65,9 @@ int SolutionChecker::IsCorrect(const std::vector<Edge<int, int>>& answer, bool& 
     //not cover all key points
     for (auto& node: mpGraph->mKeyNodes) {
         if (!mMarkMap.test(node)) {
-            isCorrect = false;
             return ASZ_SOLUTION_CHECKER_NOT_COVER_ALL_KEY_POINTS_ERROR;
         }
     }
-    isCorrect = true;
     return ASZ_SUCC;
 }
 #endif /* _SOLUTION_CHECKER_H_ */
