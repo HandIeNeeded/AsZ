@@ -126,16 +126,17 @@ namespace graph {
             return ASZ_SUCC;
         }
 
-        int FindPath(int currentNode, int& pathLength) {
+        int FindPath(int currentNode, TypeEdge2& pathLength) {
             if (mMarkMap.test(currentNode))
-                return -1;
+                return ASZ_SUCC;
             mMarkMap.set(currentNode);
             if (currentNode == mSink) {
                 if ((mMarkMap & mKeyNodesMap) == mKeyNodesMap) {
+                    mIsSolutionExist = true;
                     return ASZ_SUCC;
                 } else {
                     mMarkMap.reset(currentNode);
-                    return -1;
+                    return ASZ_SUCC;
                 }
             }
             for (auto &edge: mEdges[currentNode]) {
@@ -143,13 +144,14 @@ namespace graph {
                 TypeEdge2 length = edge.length;
                 pathLength += length;
                 mPaths.push_back(edge);
-                if (FindPath(nextNode, pathLength) == 0)
+                FindPath(nextNode, pathLength);
+                if (mIsSolutionExist)
                     return ASZ_SUCC;
                 mPaths.pop_back();
                 pathLength -= length;
             }
             mMarkMap.reset(currentNode);
-            return -1;
+            return ASZ_SUCC;
         }
     };
 }
