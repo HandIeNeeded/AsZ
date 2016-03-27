@@ -110,6 +110,7 @@ namespace graph {
         int InitAnswer() {
             mMarkMap.reset();
             mPaths.clear();
+            return ASZ_SUCC;
         }
 
         int BuildAdjacencyList() {
