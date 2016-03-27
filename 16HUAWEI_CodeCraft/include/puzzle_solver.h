@@ -56,8 +56,6 @@ int PuzzleSolver::Init(const std::string& graphFile, const std::string& nodeFile
 int PuzzleSolver::RunOneTest(const std::string& testName) {
     int rtn = TestDataGenerator::GenOneDataSet(testName);
     CHECK_RTN_LOGE(rtn);
-    std::string commandLine = "mkdir -p " + testName;
-    system(commandLine.c_str());
     rtn = mGraph.ReadGraphInfo(testName + "/topo.csv");
     CHECK_RTN_LOGE(rtn);
     rtn = mGraph.ReadKeyNodesInfo(testName + "/demand.csv");
