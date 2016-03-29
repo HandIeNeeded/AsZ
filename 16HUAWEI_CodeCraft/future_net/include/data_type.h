@@ -14,6 +14,8 @@
 #include <map>
 #include <set>
 #include "data_io_helper.h"
+#include "max_flow_solver.h"
+#include "time_utility.h"
 
 namespace graph {
     const int MAX_NODE = 700;
@@ -27,10 +29,9 @@ namespace graph {
 
     template<class Type1, class Type2>
     struct Node {
-        Type1 inDegree, outDegree;
+        Type1 index;
         Type2 priority;
-        Node (Type2 priority): inDegree(0), outDegree(0), priority(priority) {}
-        Node (Type1 in, Type1 out, Type2 priority): inDegree(in), outDegree(out), priority(priority) {}
+        Node (Type1 index, Type2 priority): index(index), priority(priority) {}
     };
 
     template<class TypeNode1, class TypeNode2, class TypeEdge1, class TypeEdge2>
@@ -121,6 +122,20 @@ namespace graph {
             return ASZ_SUCC;
         }
 
+        int CheckSolutionExistByMaxFlow() {
+            MaxFlow<MAX_NODE, MAX_EDGE << 1, TypeNode1> flow;
+            flow.init(mNode, mNode + 1);
+
+            return ASZ_SUCC;
+        }
+
+        int AStarSearch(int &pathLength) {
+
+
+
+            return ASZ_SUCC;
+        }
+
     public:
 
         bool mIsSolutionExist;
@@ -172,6 +187,36 @@ namespace graph {
                 pathLength -= length;
             }
             mMarkMap.reset(currentNode);
+            return ASZ_SUCC;
+        }
+
+        template<class Type>
+        struct greater {
+            bool operator () (const std::pair<Type, int>& lhs, const std::pair<Type, int>& rhs) const {
+                return lhs.first < rhs.first || (lhs.first == rhs.first && lhs.second < rhs.second);
+            }
+        };
+
+        int Dijkstra(int start, std::vector<TypeEdge2>& distanceFromStart) {
+            distanceFromStart.clear();
+            distanceFromStart.assign(MAX_NODE, 20000);
+            distanceFromStart[start] = 0;
+            std::bitset<MAX_NODE> visited;
+            std::priority_queue<std::pair<TypeEdge2, int>, std::vector<std::pair<TypeEdge2, int>>, greater<TypeEdge2>> que;
+            que.push({0, start});
+            visited.set(start);
+            while (que.size()) {
+                int node = que.top().second; que.pop();
+                if (visited.test(node)) continue;
+                visited.set(node);
+                for (auto& edge: mEdges[node]) {
+                    int nextNode = edge.end;
+                    if (distanceFromStart[nextNode] > edge.length + distanceFromStart[node]) {
+                        distanceFromStart[nextNode] = edge.length + distanceFromStart[node];
+                        que.push({distanceFromStart[nextNode], nextNode});
+                    }
+                }
+            }
             return ASZ_SUCC;
         }
     };
