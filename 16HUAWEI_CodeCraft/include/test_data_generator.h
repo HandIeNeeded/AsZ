@@ -18,16 +18,16 @@
 #include "data_io_helper.h"
 
 #define INDEX_RANGE 1000
+#define TEST_NODE_SIZE 600
 
-class Edge {
-    Edge() {}
-    Edge(int index, int begin, int end, int length) : index(index), begin(begin), end(end), length(length) {}
-public:
+struct TestEdge {
     int index, begin, end, length;
+    TestEdge() {}
+    TestEdge(int index, int begin, int end, int length) : index(index), begin(begin), end(end), length(length) {}
 };
 
 class TestDataGenerator {
-public:
+private:
     //node number, edge number
     int mNode, mEdge;
     //source id , sink id
@@ -37,7 +37,7 @@ public:
     //count node outdegree
     std::vector<int> mOutDegree;
     //edge generated
-    std::vector<std::vector<Edge>> mEdges;
+    std::vector<std::vector<TestEdge>> mEdges;
 public:
     inline int Init();
 
@@ -49,11 +49,11 @@ public:
 
     inline void ResetConnected();
 
-    int GenEdgeInSet(std::bitset<mNode>& connectNode, int edgeNumber);
+    inline int GenEdgeInSet(std::bitset<TEST_NODE_SIZE>& connectNode, int edgeNumber);
 
-    int GenOneDataSet(const std::string& fileName);
+    inline int GenOneDataSet(const std::string& fileName);
 
-    static inline int GenDataSets(const std::vector<std::string>& fileNames);
+    inline int GenDataSets(const std::vector<std::string>& fileNames);
 };
 
 int TestDataGenerator::Init() {
@@ -81,7 +81,7 @@ void TestDataGenerator::ResetConnected() {
     mConnected = false;
 }
 
-int TestDataGenerator::GenEdgeInSet(std::bitset<mNode>& connectNode, int edgeNumber) {
+int TestDataGenerator::GenEdgeInSet(std::bitset<TEST_NODE_SIZE>& connectNode, int edgeNumber) {
     std::vector<int> inSetNode;
     for (int i = 0; i < mNode; i++) {
         if (connectNode.test(i)) {
@@ -94,7 +94,7 @@ int TestDataGenerator::GenEdgeInSet(std::bitset<mNode>& connectNode, int edgeNum
         int end = (start + rand() % (inSetNode.size() - 1) + 1) % inSetNode.size();
         start = inSetNode[start], end = inSetNode[end];
         int length = rand() % 20 + 1;
-        mEdges[start].push_back(Edge(index, start, end, length));
+        mEdges[start].push_back(TestEdge(index, start, end, length));
     }
     return ASZ_SUCC;
 }
@@ -109,56 +109,80 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     rtn = Init();
     CHECK_RTN_LOGE(rtn);
     if (mConnected) {
+
+        // Generate a map always have a solution
+        // First: Find a path consists of (n - 1) edge from Source to Sink
+        // Second: randomly generate the rest (Edge - n + 1) edges connect any two nodes
+
+        //no enough edges to construct a solution
         if (mEdge < mNode - 1) return ASZ_DATA_GENERATOR_LACK_OF_EDGE_ERROR;
+
+        //consisting nodes not yet in path
         std::vector<int> notVisitedNode;
         for (int i = 0; i < mNode; i++)
             if (i != mSource && i != mSink)
                 notVisitedNode.push_back(i);
+
+        //Find a path from source to sink            
         int currentNode = mSource;
         for (int i = 0; i < mNode - 2; i++) {
-            swap(notVisitedNode[rand() % notVisitedNode.size()], notVisitedNode[notVisitedNode.size() - 1]);
+            std::swap(notVisitedNode[rand() % notVisitedNode.size()], notVisitedNode[notVisitedNode.size() - 1]);
             int nextNode = notVisitedNode.back();
             notVisitedNode.pop_back();
-            mEdges[currentNode].push_back(Edge(rand() % INDEX_RANGE, currentNode, nextNode, rand() % 20 + 1));
+            mEdges[currentNode].push_back(TestEdge(rand() % INDEX_RANGE, currentNode, nextNode, rand() % 20 + 1));
             currentNode = nextNode;
         }
-        mEdges[currentNode].push_back(Edge(rand() % INDEX_RANGE, currentNode, mSink, rand() % 20 + 1));
+        mEdges[currentNode].push_back(TestEdge(rand() % INDEX_RANGE, currentNode, mSink, rand() % 20 + 1));
+
+        //generate the rest edge randomly
         int countEdge = mNode - 1;
         while (countEdge++ < mEdge) {
             int index = rand() % INDEX_RANGE;
             int start = rand() % mNode;
             int end = rand() % mNode;
             int length = rand() % 20 + 1;
-            mEdges[start].push_back(Edge(index, start, end, length));
+            mEdges[start].push_back(TestEdge(index, start, end, length));
         }
     } else {
+        // Generate a map with no solution
+        // A map not connected will definitely have no solution
+        // Divide the nodes into two set and generator edges seperately in two sets
+
+        //tricky test, can only have edges from sink to source
         if (mNode == 2) return ASZ_DATA_GENERATOR_LACK_OF_NODE_ERROR;
-        std::bitset<mNode> connectNode;
+
+        //mark the nodes in the same set
+        std::bitset<TEST_NODE_SIZE> connectNode;
+
         //mSource component
         for (int i = 0; i < mNode; i++) {
-            if (i == mSource) {
+            if (i == mSource) {                     //must have source
                 connectNode.set(i);
             } else
-            if (i == mSink) {
+            if (i == mSink) {                       //mustn't have sink
                 connectNode.reset(i);
             } else
-            if (rand() & 1) {
+            if (rand() & 1) {                       //randomly have other nodes
                 connectNode.set(i);
             } else {
                 connectNode.reset(i);
             }
         }
-        int countEdge = 0;
-        int assignEdge = mEdge / 2;
-        if (inSetNode.size() == 1) {
+
+        //try to equally distribute the edge into two sets
+        int assignEdge = mEdge / 2, countEdge = 0;
+        if ((int)connectNode.count() == 1) {             //set with only 1 node can not have any edges
             assignEdge = 0;
         } else
-        if (inSetNode.size() == mNode - 1) {
+        if (connectNode.count() == (unsigned int)mNode - 1) {     //if the other set have one edge, this set must hava all the edges
             assignEdge = mEdge;
         }
+
         rtn = GenEdgeInSet(connectNode, assignEdge);
         CHECK_RTN_LOGE(rtn);
         countEdge += assignEdge;
+
+        //generate the edges in another set
         for (int i = 0; i < mNode; i++) {
             if (connectNode.test(i)) {
                 connectNode.reset(i);
