@@ -54,7 +54,9 @@ int PuzzleSolver::Init(const std::string& graphFile, const std::string& nodeFile
 }
 
 int PuzzleSolver::RunOneTest(const std::string& testName) {
-    int rtn = TestDataGenerator::GenOneDataSet(testName);
+    // cannot use the static
+    // int rtn = TestDataGenerator::GenOneDataSet(testName);
+    int rtn = ASZ_SUCC;
     CHECK_RTN_LOGE(rtn);
     rtn = mGraph.ReadGraphInfo(testName + "/topo.csv");
     CHECK_RTN_LOGE(rtn);
