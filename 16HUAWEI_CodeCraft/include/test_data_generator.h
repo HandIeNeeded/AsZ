@@ -21,9 +21,9 @@
 #define TEST_NODE_SIZE 600
 
 struct TestEdge {
-    int index, begin, end, length;
+    int index, start, end, length;
     TestEdge() {}
-    TestEdge(int index, int begin, int end, int length) : index(index), begin(begin), end(end), length(length) {}
+    TestEdge(int index, int start, int end, int length) : index(index), start(start), end(end), length(length) {}
 };
 
 class TestDataGenerator {
@@ -110,6 +110,8 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     CHECK_RTN_LOGE(rtn);
     if (mConnected) {
 
+        std::cerr << "Start generate." << std::endl;
+
         // Generate a map always have a solution
         // First: Find a path consists of (n - 1) edge from Source to Sink
         // Second: randomly generate the rest (Edge - n + 1) edges connect any two nodes
@@ -123,7 +125,7 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
             if (i != mSource && i != mSink)
                 notVisitedNode.push_back(i);
 
-        //Find a path from source to sink            
+        //Find a path from source to sink
         int currentNode = mSource;
         for (int i = 0; i < mNode - 2; i++) {
             std::swap(notVisitedNode[rand() % notVisitedNode.size()], notVisitedNode[notVisitedNode.size() - 1]);
@@ -143,6 +145,8 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
             int length = rand() % 20 + 1;
             mEdges[start].push_back(TestEdge(index, start, end, length));
         }
+
+        std::cerr << "Finish generate." << std::endl;
     } else {
         // Generate a map with no solution
         // A map not connected will definitely have no solution
@@ -193,6 +197,53 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
         CHECK_RTN_LOGE(rtn);
         countEdge += assignEdge;
     }
+
+    //print the edges
+    DataIOHelper::InitOutput(fileName + "/topo.csv");
+    for (int i = 0; i < mNode; i++) {
+        for (auto &edge: mEdges[i]) {
+            DataIOHelper::WriteOneInterger(edge.index);
+            DataIOHelper::WriteOneChar(',');
+            DataIOHelper::WriteOneInterger(edge.start);
+            DataIOHelper::WriteOneChar(',');
+            DataIOHelper::WriteOneInterger(edge.end);
+            DataIOHelper::WriteOneChar(',');
+            DataIOHelper::WriteOneInterger(edge.length);
+            DataIOHelper::WriteOneChar('\n');
+        }
+    }
+    DataIOHelper::Close();
+
+    //generate the including node set
+    int excludeNode = rand() % (mNode - 1);
+    std::vector<int> includeNode;
+    for (int i = 1; i < mNode - 1; i++) {
+        includeNode.push_back(i);
+    }
+    includeNode.push_back(0);
+    includeNode.push_back(mNode - 1);
+    for (int i = 0; i < excludeNode; i++) {
+        int x = rand() % includeNode.size();
+        includeNode[x] = includeNode.back();
+        includeNode.pop_back();
+    }
+
+    //print the edge number, node number and including node set
+    DataIOHelper::InitOutput(fileName + "/demand.csv");
+    DataIOHelper::WriteOneInterger(0);
+    DataIOHelper::WriteOneChar(',');
+    DataIOHelper::WriteOneInterger(mNode - 1);
+    DataIOHelper::WriteOneChar(',');
+    for (unsigned int i = 0; i < includeNode.size(); i++) {
+        DataIOHelper::WriteOneInterger(includeNode[i]);
+        if (i == includeNode.size() - 1) {
+            DataIOHelper::WriteOneChar('\n');
+        } else {
+            DataIOHelper::WriteOneChar('|');
+        }
+    }
+    DataIOHelper::Close();
+
     return ASZ_SUCC;
 }
 
