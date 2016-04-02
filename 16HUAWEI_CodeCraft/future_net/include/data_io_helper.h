@@ -34,7 +34,7 @@ public:
         mFileOutStream.open(output.c_str());
         return ASZ_SUCC;
     }
-    
+
     static int Close() {
         mFileInStream.close();
         mFileOutStream.close();
@@ -70,10 +70,10 @@ public:
     static inline void WriteOneInterger(int x) {
         if (x == 0) WriteOneChar('0');
         else {
-            while (x) {
-                WriteOneChar('0' + x % 10);
-                x /= 10;
+            if (x >= 10) {
+                WriteOneInterger(x / 10);
             }
+            WriteOneChar('0' + x % 10);
         }
     }
 

@@ -118,8 +118,6 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     CHECK_RTN_LOGE(rtn);
     if (mConnected) {
 
-        std::cerr << "Start generate." << std::endl;
-
         // Generate a map always have a solution
         // First: Find a path consists of (n - 1) edge from Source to Sink
         // Second: randomly generate the rest (Edge - n + 1) edges connect any two nodes
@@ -153,10 +151,6 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
             int length = rand() % 20 + 1;
             mEdges[start].push_back(TestEdge(index, start, end, length));
         }
-
-        std::cerr << mEdges.size() << std::endl;
-
-        std::cerr << "Finish generate." << std::endl;
     } else {
         // Generate a map with no solution
         // A map not connected will definitely have no solution

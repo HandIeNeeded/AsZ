@@ -78,7 +78,7 @@ int PuzzleSolver::RunOneTest(const std::string& testName) {
 int PuzzleSolver::RunTests(int n) {
     int rtn = ASZ_SUCC;
     for (int i = 0; i < n; i++) {
-        std::string testName = "./batch_test_" + std::to_string(i);
+        std::string testName = "../scripts/batch_tests/batch_test_" + std::to_string(i);
         Init();
         rtn = RunOneTest(testName);
         CHECK_RTN_LOGE(rtn);
