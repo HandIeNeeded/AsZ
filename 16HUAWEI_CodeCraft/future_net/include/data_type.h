@@ -17,6 +17,11 @@
 #include "max_flow_solver.h"
 #include "time_utility.h"
 
+#ifndef _RANDOM_TRIGGER_
+#define _RANDOM_TRIGGER_
+static bool triggerRand = false;
+#endif
+
 namespace graph {
     const int MAX_NODE = 700;
     const int MAX_EDGE = 5000;

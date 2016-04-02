@@ -20,6 +20,11 @@
 #define INDEX_RANGE 1000
 #define TEST_NODE_SIZE 600
 
+#ifndef _RANDOM_TRIGGER_
+#define _RANDOM_TRIGGER_
+static bool triggerRand = false;
+#endif
+
 struct TestEdge {
     int index, start, end, length;
     TestEdge() {}
@@ -100,11 +105,14 @@ int TestDataGenerator::GenEdgeInSet(std::bitset<TEST_NODE_SIZE>& connectNode, in
 }
 
 int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
+    if (!triggerRand) {
+        triggerRand = true;
+        srand(time(0));
+    }
     //generator graph
     //use data_io_helper
     if (mNode > 1 && mEdge > 1); else
     return ASZ_DATA_GENERATOR_PARAMETER_MISSING_ERROR;
-    srand(time(0));
     int rtn;
     rtn = Init();
     CHECK_RTN_LOGE(rtn);
@@ -145,6 +153,8 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
             int length = rand() % 20 + 1;
             mEdges[start].push_back(TestEdge(index, start, end, length));
         }
+
+        std::cerr << mEdges.size() << std::endl;
 
         std::cerr << "Finish generate." << std::endl;
     } else {
@@ -248,6 +258,10 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
 }
 
 int TestDataGenerator::GenDataSets(const std::vector<std::string>& fileNames) {
+    if (!triggerRand) {
+        triggerRand = true;
+        srand(time(0));
+    }
     int rtn = ASZ_SUCC;
     for (auto &str: fileNames) {
         rtn = GenOneDataSet(str);

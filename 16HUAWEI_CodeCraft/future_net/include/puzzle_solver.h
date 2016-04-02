@@ -61,6 +61,8 @@ int PuzzleSolver::RunOneTest(const std::string& testName) {
     testGenerator.SetEdgeNumber(20);
     testGenerator.SetConnected();
     int rtn = testGenerator.GenOneDataSet(testName);
+//    std::cerr << testName << std::endl;
+//    return ASZ_SUCC;
     CHECK_RTN_LOGE(rtn);
     rtn = mGraph.ReadGraphInfo(testName + "/topo.csv");
     CHECK_RTN_LOGE(rtn);
