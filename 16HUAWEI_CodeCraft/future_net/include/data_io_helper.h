@@ -23,14 +23,14 @@ public:
 
     static int InitInput(const std::string& input) {
         mFileInStream.close();
-        std::cerr << "Open input file: " << input << std::endl;
+        std::cerr << "[" << __FILE__ << "] Line: " << __LINE__ << ": Open input file: " << input << std::endl;
         mFileInStream.open(input.c_str());
         return ASZ_SUCC;
     }
 
     static int InitOutput(const std::string& output) {
         mFileOutStream.close();
-        std::cerr << "Open output file: " << output << std::endl;
+        std::cerr << "[" << __FILE__ << "] Line: " << __LINE__ << ": Open output file: " << output << std::endl;
         mFileOutStream.open(output.c_str());
         return ASZ_SUCC;
     }

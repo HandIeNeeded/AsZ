@@ -14,11 +14,10 @@
 #include <iomanip>
 #include <vector>
 #include <string>
+#include <bitset>
 #include "error_code.h"
 #include "data_io_helper.h"
-
-#define INDEX_RANGE 1000
-#define TEST_NODE_SIZE 600
+#include "data_type.h"
 
 #ifndef _RANDOM_TRIGGER_
 #define _RANDOM_TRIGGER_
@@ -54,7 +53,7 @@ public:
 
     inline void ResetConnected();
 
-    inline int GenEdgeInSet(std::bitset<TEST_NODE_SIZE>& connectNode, int edgeNumber);
+    inline int GenEdgeInSet(std::bitset<graph::MAX_NODE>& connectNode, int edgeNumber);
 
     inline int GenOneDataSet(const std::string& fileName);
 
@@ -86,7 +85,7 @@ void TestDataGenerator::ResetConnected() {
     mConnected = false;
 }
 
-int TestDataGenerator::GenEdgeInSet(std::bitset<TEST_NODE_SIZE>& connectNode, int edgeNumber) {
+int TestDataGenerator::GenEdgeInSet(std::bitset<graph::MAX_NODE>& connectNode, int edgeNumber) {
     std::vector<int> inSetNode;
     for (int i = 0; i < mNode; i++) {
         if (connectNode.test(i)) {
@@ -94,7 +93,7 @@ int TestDataGenerator::GenEdgeInSet(std::bitset<TEST_NODE_SIZE>& connectNode, in
         }
     }
     while (edgeNumber--) {
-        int index = rand() % INDEX_RANGE;
+        int index = rand() % graph::MAX_EDGE;
         int start = rand() % inSetNode.size();
         int end = (start + rand() % (inSetNode.size() - 1) + 1) % inSetNode.size();
         start = inSetNode[start], end = inSetNode[end];
@@ -116,8 +115,10 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     int rtn;
     rtn = Init();
     CHECK_RTN_LOGE(rtn);
+    std::string command = "mkdir -p " + fileName;
+    std::system(command.c_str());
+    std::cerr << "[" << __FILE__ << "] LINE: " << __LINE__ << ": Success to create the test case " << fileName << "'s folder." << std::endl;
     if (mConnected) {
-
         // Generate a map always have a solution
         // First: Find a path consists of (n - 1) edge from Source to Sink
         // Second: randomly generate the rest (Edge - n + 1) edges connect any two nodes
@@ -137,15 +138,15 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
             std::swap(notVisitedNode[rand() % notVisitedNode.size()], notVisitedNode[notVisitedNode.size() - 1]);
             int nextNode = notVisitedNode.back();
             notVisitedNode.pop_back();
-            mEdges[currentNode].push_back(TestEdge(rand() % INDEX_RANGE, currentNode, nextNode, rand() % 20 + 1));
+            mEdges[currentNode].push_back(TestEdge(rand() % graph::MAX_EDGE, currentNode, nextNode, rand() % 20 + 1));
             currentNode = nextNode;
         }
-        mEdges[currentNode].push_back(TestEdge(rand() % INDEX_RANGE, currentNode, mSink, rand() % 20 + 1));
+        mEdges[currentNode].push_back(TestEdge(rand() % graph::MAX_EDGE, currentNode, mSink, rand() % 20 + 1));
 
         //generate the rest edge randomly
         int countEdge = mNode - 1;
         while (countEdge++ < mEdge) {
-            int index = rand() % INDEX_RANGE;
+            int index = rand() % graph::MAX_EDGE;
             int start = rand() % mNode;
             int end = rand() % mNode;
             int length = rand() % 20 + 1;
@@ -160,7 +161,7 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
         if (mNode == 2) return ASZ_DATA_GENERATOR_LACK_OF_NODE_ERROR;
 
         //mark the nodes in the same set
-        std::bitset<TEST_NODE_SIZE> connectNode;
+        std::bitset<graph::MAX_NODE> connectNode;
 
         //mSource component
         for (int i = 0; i < mNode; i++) {
@@ -247,6 +248,7 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
         }
     }
     DataIOHelper::Close();
+    std::cerr << "[" << __FILE__ << "] LINE: " << __LINE__ << ": Success to generate one test case " << fileName << "." << std::endl;
 
     return ASZ_SUCC;
 }
@@ -254,7 +256,7 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
 int TestDataGenerator::GenDataSets(const std::vector<std::string>& fileNames) {
     if (!triggerRand) {
         triggerRand = true;
-        srand(time(0));
+        srand(time(0) % clock());
     }
     int rtn = ASZ_SUCC;
     for (auto &str: fileNames) {

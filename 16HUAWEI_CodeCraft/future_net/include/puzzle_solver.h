@@ -26,7 +26,7 @@ public:
 
     int Init(const std::string& graphFile, const std::string& nodeFile);
 
-    int RunOneTest(const std::string& testName);
+    int RunOneTest(const std::string& testName, int nodeNumber = 10, int edgeNumber = 30);
 
     int RunTests(int n);
 
@@ -53,25 +53,24 @@ int PuzzleSolver::Init(const std::string& graphFile, const std::string& nodeFile
     return ASZ_SUCC;
 }
 
-int PuzzleSolver::RunOneTest(const std::string& testName) {
+int PuzzleSolver::RunOneTest(const std::string& testName, int nodeNumber, int edgeNumber) {
     // cannot use the static
     // int rtn = TestDataGenerator::GenOneDataSet(testName);
     TestDataGenerator testGenerator;
-    testGenerator.SetNodeNumber(5);
-    testGenerator.SetEdgeNumber(20);
+    testGenerator.SetNodeNumber(nodeNumber);
+    testGenerator.SetEdgeNumber(edgeNumber);
     testGenerator.SetConnected();
     int rtn = testGenerator.GenOneDataSet(testName);
-//    std::cerr << testName << std::endl;
-//    return ASZ_SUCC;
     CHECK_RTN_LOGE(rtn);
     rtn = mGraph.ReadGraphInfo(testName + "/topo.csv");
     CHECK_RTN_LOGE(rtn);
     rtn = mGraph.ReadKeyNodesInfo(testName + "/demand.csv");
     CHECK_RTN_LOGE(rtn);
-    rtn = Solve();
+    rtn = Solve(true);
     CHECK_RTN_LOGE(rtn);
     Save(testName + "/asz_result.csv");
     CHECK_RTN_LOGE(rtn);
+    
     return ASZ_SUCC;
 }
 
