@@ -175,7 +175,8 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
         while (countEdge++ < mEdge) {
             int index = GenerateIndex();
             int start = Random(0, mNode - 1);
-            int end = Random(0, mNode - 1);
+            // int end = Random(0, mNode - 1);
+            int end = Random(0, 3) ? Random(0, mNode - 1) : mSink;
             int length = Random(1, 10);
             mEdges[start].push_back(TestEdge(index, start, end, length));
         }
@@ -233,6 +234,9 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     //print the edges
     DataIOHelper::InitOutput(fileName + "/topo.csv");
     for (int i = 0; i < mNode; i++) {
+        for (int j = 0; j < mEdges[i].size(); j++) {
+            std::swap(mEdges[i][j], mEdges[i][j + Random(0, mEdges[i].size() - j - 1)]);
+        }
         for (auto &edge: mEdges[i]) {
             DataIOHelper::WriteOneInterger(edge.index);
             DataIOHelper::WriteOneChar(',');
@@ -247,13 +251,11 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     DataIOHelper::Close();
 
     //generate the including node set
-    int excludeNode = Random(0, mNode - 2);
+    int excludeNode = Random(mNode / 2, mNode);
     std::vector<int> includeNode;
-    for (int i = 1; i < mNode - 1; i++) {
+    for (int i = 0; i < mNode; i++) {
         includeNode.push_back(i);
     }
-    includeNode.push_back(0);
-    includeNode.push_back(mNode - 1);
     for (int i = 0; i < excludeNode; i++) {
         int x = Random(0, includeNode.size() - 1);
         includeNode[x] = includeNode.back();
@@ -262,9 +264,9 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
 
     //print the edge number, node number and including node set
     DataIOHelper::InitOutput(fileName + "/demand.csv");
-    DataIOHelper::WriteOneInterger(0);
+    DataIOHelper::WriteOneInterger(mSource);
     DataIOHelper::WriteOneChar(',');
-    DataIOHelper::WriteOneInterger(mNode - 1);
+    DataIOHelper::WriteOneInterger(mSink);
     DataIOHelper::WriteOneChar(',');
     for (unsigned int i = 0; i < includeNode.size(); i++) {
         DataIOHelper::WriteOneInterger(includeNode[i]);
