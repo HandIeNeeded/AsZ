@@ -239,7 +239,7 @@ namespace graph {
             bool operator () (const std::pair<double, Edge<TypeEdge1, TypeEdge2>>& a, const std::pair<double, Edge<TypeEdge1, TypeEdge2>>& b) const {
                 return a.first < b.first || (a.first == b.first && a.second.end < b.second.end);
             }
-        };
+        } myComp;
 
         int UpdateCandidateNodes(int currentNode, const Edge<TypeEdge1, TypeEdge2>& currentEdge, const std::vector<TypeEdge2>& distanceFromStart, const std::vector<Edge<TypeEdge1, TypeEdge2>>& previousPaths, std::vector<std::pair<double, Edge<TypeEdge1, TypeEdge2>>>& candidateNodes) {
             double score = 0.0;
@@ -294,7 +294,7 @@ namespace graph {
                         UpdateCandidateNodes(node, edge, distanceFromStart, previousPaths, candidateNodes);
                     }
                 }
-                std::sort(candidateNodes.begin(), candidateNodes.end(), comp);
+                std::sort(candidateNodes.begin(), candidateNodes.end(), myComp);
                 for (auto& candidate: candidateNodes) {
                     TypeEdge1 nextNode = candidate.second.end;
                     mPaths.push_back(candidate.second);
