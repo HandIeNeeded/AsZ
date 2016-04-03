@@ -1,5 +1,5 @@
 #!/bin/bash
-cp batch.sh future_net
+#cp batch.sh future_net
 cd future_net
 rm ./bin/* -rf
 make

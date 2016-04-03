@@ -262,6 +262,7 @@ namespace graph {
         }
 
         int FindPathByAstar(TypeEdge1 node, TypeEdge2& pathLength, bool isReadyToFindSink) {
+            LOG << "Now node: " << node << ", path length: " << pathLength << std::endl;
             mMarkMap.set(node);
             if (!isReadyToFindSink) isReadyToFindSink = (mMarkMap & mKeyNodesMap).count() == mKeyNodesMap.count();
             if (isReadyToFindSink) {

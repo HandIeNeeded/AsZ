@@ -7,7 +7,7 @@ bin/puzzle_solver_asz: bin/puzzle_solver_asz.o
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -o $@ $^
 
-bin/puzzle_solver_asz.o: src/puzzle_solver_asz.cc include/puzzle_solver.h include/error_code.h include/time_utility.h
+bin/puzzle_solver_asz.o: src/puzzle_solver_asz.cc include/*.h
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -c -o $@ $<
 
