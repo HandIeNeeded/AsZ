@@ -42,6 +42,8 @@ private:
     std::vector<int> mOutDegree;
     //edge generated
     std::vector<std::vector<TestEdge>> mEdges;
+    //record used index
+    std::vector<int> remainIndex;
 public:
     inline int Init();
 
@@ -53,19 +55,30 @@ public:
 
     inline void ResetConnected();
 
-    inline int GenEdgeInSet(std::bitset<graph::MAX_NODE>& connectNode, int edgeNumber);
+    inline int GenerateIndex();
 
-    inline int GenOneDataSet(const std::string& fileName);
+    int GenEdgeInSet(std::bitset<graph::MAX_NODE>& connectNode, int edgeNumber);
 
-    inline int GenDataSets(const std::vector<std::string>& fileNames);
+    int GenOneDataSet(const std::string& fileName);
+
+    int GenDataSets(const std::vector<std::string>& fileNames);
 };
 
 int TestDataGenerator::Init() {
+    if (!triggerRand) {
+        triggerRand = true;
+        srand(time(0));
+    }
     mEdges.clear();
     mEdges.resize(mNode);
     mOutDegree.clear();
     mOutDegree.resize(mNode, 0);
     mSource = 0, mSink = mNode - 1;
+    remainIndex.clear();
+    for (int index = 0; index < graph::MAX_EDGE; index++) {
+        remainIndex.push_back(index);
+        std::swap(remainIndex[remainIndex.size() - 1], remainIndex[rand() % remainIndex.size()]);
+    }
     return ASZ_SUCC;
 }
 
@@ -85,6 +98,12 @@ void TestDataGenerator::ResetConnected() {
     mConnected = false;
 }
 
+int TestDataGenerator::GenerateIndex() {
+    int res = remainIndex.back();
+    remainIndex.pop_back();
+    return res;
+}
+
 int TestDataGenerator::GenEdgeInSet(std::bitset<graph::MAX_NODE>& connectNode, int edgeNumber) {
     std::vector<int> inSetNode;
     for (int i = 0; i < mNode; i++) {
@@ -93,7 +112,7 @@ int TestDataGenerator::GenEdgeInSet(std::bitset<graph::MAX_NODE>& connectNode, i
         }
     }
     while (edgeNumber--) {
-        int index = rand() % graph::MAX_EDGE;
+        int index = GenerateIndex();
         int start = rand() % inSetNode.size();
         int end = (start + rand() % (inSetNode.size() - 1) + 1) % inSetNode.size();
         start = inSetNode[start], end = inSetNode[end];
@@ -104,10 +123,6 @@ int TestDataGenerator::GenEdgeInSet(std::bitset<graph::MAX_NODE>& connectNode, i
 }
 
 int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
-    if (!triggerRand) {
-        triggerRand = true;
-        srand(time(0));
-    }
     //generator graph
     //use data_io_helper
     if (mNode > 1 && mEdge > 1); else
@@ -118,6 +133,7 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     std::string command = "mkdir -p " + fileName;
     std::system(command.c_str());
     std::cerr << "[" << __FILE__ << "] LINE: " << __LINE__ << ": Success to create the test case " << fileName << "'s folder." << std::endl;
+
     if (mConnected) {
         // Generate a map always have a solution
         // First: Find a path consists of (n - 1) edge from Source to Sink
@@ -138,15 +154,15 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
             std::swap(notVisitedNode[rand() % notVisitedNode.size()], notVisitedNode[notVisitedNode.size() - 1]);
             int nextNode = notVisitedNode.back();
             notVisitedNode.pop_back();
-            mEdges[currentNode].push_back(TestEdge(rand() % graph::MAX_EDGE, currentNode, nextNode, rand() % 20 + 1));
+            mEdges[currentNode].push_back(TestEdge(GenerateIndex(), currentNode, nextNode, rand() % 20 + 1));
             currentNode = nextNode;
         }
-        mEdges[currentNode].push_back(TestEdge(rand() % graph::MAX_EDGE, currentNode, mSink, rand() % 20 + 1));
+        mEdges[currentNode].push_back(TestEdge(GenerateIndex(), currentNode, mSink, rand() % 20 + 1));
 
         //generate the rest edge randomly
         int countEdge = mNode - 1;
         while (countEdge++ < mEdge) {
-            int index = rand() % graph::MAX_EDGE;
+            int index = GenerateIndex();
             int start = rand() % mNode;
             int end = rand() % mNode;
             int length = rand() % 20 + 1;
