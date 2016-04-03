@@ -27,8 +27,7 @@ namespace graph {
     const int MAX_NODE = 700;
     const int MAX_EDGE = 5000;
     const int Infinity = 20000;
-    const double MAGIC_NUMBER = 2.0;
-    const double MAGIC_COEF = 1.0;
+    const double MAGIC_COEF = 2.0;
     template<class Type1, class Type2>
     struct Edge {
         Type1 start, end, index;
@@ -209,21 +208,31 @@ namespace graph {
         };
 
         int Dijkstra(int start, std::vector<TypeEdge2>& distanceFromStart, std::vector<Edge<TypeEdge1, TypeEdge2>>& previousPaths) {
+            LOG << "Start: " << start << std::endl;
+            for (int i = 0; i < 5; i++) {
+                std::cerr << mMarkMap.test(i) << ' ';
+            }
+            std::cerr << std::endl;
             distanceFromStart.clear();
             distanceFromStart.assign(MAX_NODE, Infinity);
             previousPaths.clear();
             previousPaths.assign(MAX_NODE, Edge<TypeEdge1, TypeEdge2>());
             distanceFromStart[start] = 0;
+            for (int i = 0; i < 5; i++) {
+                std::cerr << distanceFromStart[i] << ' ';
+            }
+            std::cerr << std::endl;
             std::bitset<MAX_NODE> visited;
-            std::priority_queue<std::pair<TypeEdge2, int>, std::vector<std::pair<TypeEdge2, int>>, greater<TypeEdge2>> que;
+            std::priority_queue<std::pair<TypeEdge2, TypeEdge1>, std::vector<std::pair<TypeEdge2, TypeEdge1>>, greater<TypeEdge2>> que;
             que.push({0, start});
-            visited.set(start);
             while (que.size()) {
                 TypeEdge1 node = que.top().second; que.pop();
                 if (visited.test(node)) continue;
                 visited.set(node);
+                LOG << "Node: " << node << std::endl;
                 for (auto& edge: mEdges[node]) {
                     TypeEdge1 nextNode = edge.end;
+                    LOG << "Next node: " << nextNode << ' ' << mMarkMap.test(nextNode) << std::endl;
                     if (mMarkMap.test(nextNode)) continue;
                     if (distanceFromStart[nextNode] > edge.length + distanceFromStart[node]) {
                         distanceFromStart[nextNode] = edge.length + distanceFromStart[node];
@@ -232,6 +241,10 @@ namespace graph {
                     }
                 }
             }
+            for (int i = 0; i < 5; i++) {
+                std::cerr << distanceFromStart[i] << ' ';
+            }
+            std::cerr << std::endl;
             return ASZ_SUCC;
         }
 
@@ -241,22 +254,26 @@ namespace graph {
             }
         } myComp;
 
-        int UpdateCandidateNodes(int currentNode, const Edge<TypeEdge1, TypeEdge2>& currentEdge, const std::vector<TypeEdge2>& distanceFromStart, const std::vector<Edge<TypeEdge1, TypeEdge2>>& previousPaths, std::vector<std::pair<double, Edge<TypeEdge1, TypeEdge2>>>& candidateNodes) {
+        int UpdateCandidateNodes(const Edge<TypeEdge1, TypeEdge2>& currentEdge, const std::vector<TypeEdge2>& distanceFromStart, const std::vector<Edge<TypeEdge1, TypeEdge2>>& previousPaths, std::vector<std::pair<double, Edge<TypeEdge1, TypeEdge2>>>& candidateNodes) {
             double score = 0.0;
             double edgeLengthAverage = 0.0;
-            int totalEdgeCount = 0;
-            for (int i = 0; i < MAX_NODE; i++) if (mKeyNodesMap.test(i) && !mMarkMap.test(i)) {
-                score -= MAGIC_NUMBER;
+            double edgeLengthSum = currentEdge.length;
+            int keyNodeCount = 0;
+            int totalEdgeCount = 1;
+            for (int i = 0; i < MAX_NODE; i++) if (mKeyNodesMap.test(i) && !mMarkMap.test(i) && distanceFromStart[i] != Infinity) {
+                LOG << i << ' ' << distanceFromStart[i] << std::endl;
+                keyNodeCount++;
                 int lastNode = i;
-                while (lastNode != currentNode) {
-                    edgeLengthAverage += previousPaths[lastNode].length;
+                while (lastNode != currentEdge.end) {
+                    LOG << "Last node: " << lastNode << std::endl;
+                    edgeLengthSum += previousPaths[lastNode].length;
                     lastNode = previousPaths[lastNode].start;
                     totalEdgeCount++;
                 }
             }
-            if (totalEdgeCount == 0) return ASZ_SUCC;
-            edgeLengthAverage /= totalEdgeCount;
-            score += MAGIC_COEF * edgeLengthAverage;
+            edgeLengthAverage = edgeLengthSum / totalEdgeCount;
+            score -= MAGIC_COEF * edgeLengthAverage * keyNodeCount;
+            score += edgeLengthSum;
             candidateNodes.push_back({score, currentEdge});
             return ASZ_SUCC;
         }
@@ -268,7 +285,9 @@ namespace graph {
             if (isReadyToFindSink) {
                 std::vector<TypeEdge2> distanceFromStart;
                 std::vector<Edge<TypeEdge1, TypeEdge2>> previousPaths;
+                LOG << "Before dijk" << std::endl;
                 Dijkstra(node, distanceFromStart, previousPaths);
+                LOG << "After dijk" << std::endl;
                 if (distanceFromStart[mSink] != Infinity) {
                     mIsSolutionExist = true;
                     std::vector<Edge<TypeEdge1, TypeEdge2>> tmpEdges;
@@ -285,16 +304,20 @@ namespace graph {
             }
             else {
                 std::vector<std::pair<double, Edge<TypeEdge1, TypeEdge2>>> candidateNodes;
+                LOG << "hehe" << std::endl;
                 for (auto& edge: mEdges[node]) {
                     TypeEdge1 nextNode = edge.end;
                     if (mMarkMap.test(nextNode)) continue;
                     else {
                         std::vector<TypeEdge2> distanceFromStart;
                         std::vector<Edge<TypeEdge1, TypeEdge2>> previousPaths;
+                        LOG << "Before dijk" << std::endl;
                         Dijkstra(nextNode, distanceFromStart, previousPaths);
-                        UpdateCandidateNodes(node, edge, distanceFromStart, previousPaths, candidateNodes);
+                        LOG << "After dijk" << std::endl;
+                        UpdateCandidateNodes(edge, distanceFromStart, previousPaths, candidateNodes);
                     }
                 }
+                LOG << "xixi" << ' ' << candidateNodes.size() << std::endl;
                 std::sort(candidateNodes.begin(), candidateNodes.end(), myComp);
                 for (auto& candidate: candidateNodes) {
                     TypeEdge1 nextNode = candidate.second.end;
