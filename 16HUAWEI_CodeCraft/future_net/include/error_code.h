@@ -49,6 +49,7 @@
 #define ASZ_DATA_GENERATOR_LACK_OF_NODE_WARNING 3002
 
 #define STRINGIFY(x) #x
+#define LOG std::cerr << "[" << __FILE__ << "] Line: " << __LINE__ << ": "
 #define CHECK_RTN_LOGE(x) if(x == ASZ_SUCC); else {std::cerr << "[" << __FILE__ << "] Line: " << __LINE__ << ": return error code " << x << " " << PRINTREADABLEINFO(x) << std::endl; return x;}
 #define CHECK_RTN_LOGW(x) if(x == ASZ_SUCC); else {std::cerr << "[" << __FILE__ << "] Line: " << __LINE__ << ": return warning code " << x << " " << PRINTREADABLEINFO(x) << std::endl;} 
 

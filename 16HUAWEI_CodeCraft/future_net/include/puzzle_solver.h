@@ -70,6 +70,7 @@ int PuzzleSolver::RunOneTest(const std::string& testName, int nodeNumber, int ed
     CHECK_RTN_LOGE(rtn);
     Save(testName + "/asz_result.csv");
     CHECK_RTN_LOGE(rtn);
+    std::cerr << "------------------------------------------------------------------------" << std::endl;
     
     return ASZ_SUCC;
 }
@@ -89,19 +90,19 @@ int PuzzleSolver::Solve(bool needCheckAnswer) {
     int ans;
     mGraph.BruteForce(ans);
     if (mGraph.mIsSolutionExist) {
-        std::cerr << "Find a path of length " << ans << "." << std::endl;
+        LOG << "[PuzzleSolver]: Find a path of length " << ans << "." << std::endl;
         mGraph.PrintNodePath();
         if (needCheckAnswer) {
             int rtn = SolutionChecker::Init(&mGraph);
             CHECK_RTN_LOGE(rtn);
             rtn = SolutionChecker::IsCorrect(mGraph.mPaths);
             CHECK_RTN_LOGE(rtn);
-            std::cerr << "[Solution checker]: answer is CORRECT!!!" << std::endl;
+            LOG << "[Solution checker]: answer is CORRECT!!!" << std::endl;
             return ASZ_SUCC;
         }
     }
     else {
-        std::cerr << "Can't find a path!" << std::endl;
+        LOG << "[PuzzleSolver]: Can't find a path!" << std::endl;
     }
     return ASZ_SUCC;
 }

@@ -112,7 +112,7 @@ namespace graph {
         }
 
         int PrintNodePath() {
-            std::cerr << "Path of nodes:\n" << mSource;
+            LOG << "Path of nodes: " << mSource;
             for (auto &edge: mPaths) {
                 std::cerr << ", " << edge.end;
             }
@@ -135,9 +135,9 @@ namespace graph {
         }
 
         int AStarSearch(int &pathLength) {
-
-
-
+            InitAnswer();
+            pathLength = 0;
+            //FindPathByAstar(mSource, pathLength);
             return ASZ_SUCC;
         }
 

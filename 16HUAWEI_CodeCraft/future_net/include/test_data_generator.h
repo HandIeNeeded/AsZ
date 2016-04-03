@@ -132,7 +132,7 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     CHECK_RTN_LOGE(rtn);
     std::string command = "mkdir -p " + fileName;
     std::system(command.c_str());
-    std::cerr << "[" << __FILE__ << "] LINE: " << __LINE__ << ": Success to create the test case " << fileName << "'s folder." << std::endl;
+    LOG << "Success to create the test case " << fileName << "'s folder." << std::endl;
 
     if (mConnected) {
         // Generate a map always have a solution
@@ -264,7 +264,7 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
         }
     }
     DataIOHelper::Close();
-    std::cerr << "[" << __FILE__ << "] LINE: " << __LINE__ << ": Success to generate one test case " << fileName << "." << std::endl;
+    LOG << "Success to generate one test case " << fileName << "." << std::endl;
 
     return ASZ_SUCC;
 }
