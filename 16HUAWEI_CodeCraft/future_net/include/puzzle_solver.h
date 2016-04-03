@@ -87,10 +87,11 @@ int PuzzleSolver::RunTests(int n) {
 }
 
 int PuzzleSolver::Solve(bool needCheckAnswer) {
-    int ans;
-    mGraph.BruteForce(ans);
+    int answer = 0;
+    //mGraph.BruteForce(answer);
+    mGraph.AStarSearch(answer);
     if (mGraph.mIsSolutionExist) {
-        LOG << "[PuzzleSolver]: Find a path of length " << ans << "." << std::endl;
+        LOG << "[PuzzleSolver]: Find a path of length " << answer << "." << std::endl;
         mGraph.PrintNodePath();
         if (needCheckAnswer) {
             int rtn = SolutionChecker::Init(&mGraph);
