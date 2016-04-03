@@ -1,4 +1,4 @@
-CC = g++ -g -w -std=c++11
+CC = gcc -g -w -std=c++11
 CFLAGS = -I include
 
 all: bin/puzzle_solver_asz
