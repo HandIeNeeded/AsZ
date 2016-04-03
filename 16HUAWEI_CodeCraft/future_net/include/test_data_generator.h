@@ -57,6 +57,8 @@ public:
 
     inline int GenerateIndex();
 
+    inline int Random(int lowerBound, int upperBound);
+
     int GenEdgeInSet(std::bitset<graph::MAX_NODE>& connectNode, int edgeNumber);
 
     int GenOneDataSet(const std::string& fileName);
@@ -67,12 +69,13 @@ public:
 int TestDataGenerator::Init() {
     if (!triggerRand) {
         triggerRand = true;
-        srand(time(0));
+        srand(time(0) % clock());
     }
     mEdges.clear();
     mEdges.resize(mNode);
     mOutDegree.clear();
     mOutDegree.resize(mNode, 0);
+    //default source and sink
     mSource = 0, mSink = mNode - 1;
     remainIndex.clear();
     for (int index = 0; index < graph::MAX_EDGE; index++) {
@@ -104,6 +107,10 @@ int TestDataGenerator::GenerateIndex() {
     return res;
 }
 
+int TestDataGenerator::Random(int lowerBound, int upperBound) {
+    return lowerBound + rand() % (upperBound - lowerBound + 1);
+}
+
 int TestDataGenerator::GenEdgeInSet(std::bitset<graph::MAX_NODE>& connectNode, int edgeNumber) {
     std::vector<int> inSetNode;
     for (int i = 0; i < mNode; i++) {
@@ -113,10 +120,10 @@ int TestDataGenerator::GenEdgeInSet(std::bitset<graph::MAX_NODE>& connectNode, i
     }
     while (edgeNumber--) {
         int index = GenerateIndex();
-        int start = rand() % inSetNode.size();
-        int end = (start + rand() % (inSetNode.size() - 1) + 1) % inSetNode.size();
+        int start = Random(0, inSetNode.size() - 1);
+        int end = (start + Random(1, inSetNode.size() - 1)) % inSetNode.size();
         start = inSetNode[start], end = inSetNode[end];
-        int length = rand() % 20 + 1;
+        int length = Random(1, 20);
         mEdges[start].push_back(TestEdge(index, start, end, length));
     }
     return ASZ_SUCC;
@@ -137,10 +144,14 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     if (mConnected) {
         // Generate a map always have a solution
         // First: Find a path consists of (n - 1) edge from Source to Sink
-        // Second: randomly generate the rest (Edge - n + 1) edges connect any two nodes
+        // Second: Randomly generate the rest (Edge - n + 1) edges connect any two nodes
 
         //no enough edges to construct a solution
         if (mEdge < mNode - 1) return ASZ_DATA_GENERATOR_LACK_OF_EDGE_ERROR;
+
+        //Randomly decide the source and the sink
+        mSource = Random(0, mNode - 1);
+        mSink = (mSource + Random(1, mNode - 1)) % mNode;
 
         //consisting nodes not yet in path
         std::vector<int> notVisitedNode;
@@ -151,21 +162,22 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
         //Find a path from source to sink
         int currentNode = mSource;
         for (int i = 0; i < mNode - 2; i++) {
-            std::swap(notVisitedNode[rand() % notVisitedNode.size()], notVisitedNode[notVisitedNode.size() - 1]);
+            std::swap(notVisitedNode[Random(0, notVisitedNode.size() - 1)], notVisitedNode[notVisitedNode.size() - 1]);
             int nextNode = notVisitedNode.back();
             notVisitedNode.pop_back();
-            mEdges[currentNode].push_back(TestEdge(GenerateIndex(), currentNode, nextNode, rand() % 20 + 1));
+            mEdges[currentNode].push_back(TestEdge(GenerateIndex(), currentNode, nextNode, Random(11, 20)));
             currentNode = nextNode;
         }
-        mEdges[currentNode].push_back(TestEdge(GenerateIndex(), currentNode, mSink, rand() % 20 + 1));
+        mEdges[currentNode].push_back(TestEdge(GenerateIndex(), currentNode, mSink, Random(11, 20)));
 
-        //generate the rest edge randomly
+        //generate the rest edge Randomly
         int countEdge = mNode - 1;
         while (countEdge++ < mEdge) {
             int index = GenerateIndex();
-            int start = rand() % mNode;
-            int end = rand() % mNode;
-            int length = rand() % 20 + 1;
+            int start = Random(0, mNode - 1);
+            // int end = Random(0, mNode - 1);
+            int end = Random(0, 3) ? Random(0, mNode - 1) : mSink;
+            int length = Random(1, 10);
             mEdges[start].push_back(TestEdge(index, start, end, length));
         }
     } else {
@@ -187,7 +199,7 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
             if (i == mSink) {                       //mustn't have sink
                 connectNode.reset(i);
             } else
-            if (rand() & 1) {                       //randomly have other nodes
+            if (Random(0, 1)) {                       //Randomly have other nodes
                 connectNode.set(i);
             } else {
                 connectNode.reset(i);
@@ -222,6 +234,9 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     //print the edges
     DataIOHelper::InitOutput(fileName + "/topo.csv");
     for (int i = 0; i < mNode; i++) {
+        for (int j = 0; j < mEdges[i].size(); j++) {
+            std::swap(mEdges[i][j], mEdges[i][j + Random(0, mEdges[i].size() - j - 1)]);
+        }
         for (auto &edge: mEdges[i]) {
             DataIOHelper::WriteOneInterger(edge.index);
             DataIOHelper::WriteOneChar(',');
@@ -236,24 +251,22 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
     DataIOHelper::Close();
 
     //generate the including node set
-    int excludeNode = rand() % (mNode - 1);
+    int excludeNode = Random(mNode / 2, mNode);
     std::vector<int> includeNode;
-    for (int i = 1; i < mNode - 1; i++) {
+    for (int i = 0; i < mNode; i++) {
         includeNode.push_back(i);
     }
-    includeNode.push_back(0);
-    includeNode.push_back(mNode - 1);
     for (int i = 0; i < excludeNode; i++) {
-        int x = rand() % includeNode.size();
+        int x = Random(0, includeNode.size() - 1);
         includeNode[x] = includeNode.back();
         includeNode.pop_back();
     }
 
     //print the edge number, node number and including node set
     DataIOHelper::InitOutput(fileName + "/demand.csv");
-    DataIOHelper::WriteOneInterger(0);
+    DataIOHelper::WriteOneInterger(mSource);
     DataIOHelper::WriteOneChar(',');
-    DataIOHelper::WriteOneInterger(mNode - 1);
+    DataIOHelper::WriteOneInterger(mSink);
     DataIOHelper::WriteOneChar(',');
     for (unsigned int i = 0; i < includeNode.size(); i++) {
         DataIOHelper::WriteOneInterger(includeNode[i]);
@@ -270,10 +283,6 @@ int TestDataGenerator::GenOneDataSet(const std::string& fileName) {
 }
 
 int TestDataGenerator::GenDataSets(const std::vector<std::string>& fileNames) {
-    if (!triggerRand) {
-        triggerRand = true;
-        srand(time(0) % clock());
-    }
     int rtn = ASZ_SUCC;
     for (auto &str: fileNames) {
         rtn = GenOneDataSet(str);
