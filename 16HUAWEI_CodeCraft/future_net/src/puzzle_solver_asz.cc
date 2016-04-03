@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
         CHECK_RTN_LOGE(rtn);
         rtn = asz.Save(argv[3]);
         CHECK_RTN_LOGE(rtn);
-        std::cerr << "Puzzle solved!!!" << std::endl;
+        LOG << "Puzzle solved!!!" << std::endl;
     }
     else {
         rtn = asz.RunTests(5);

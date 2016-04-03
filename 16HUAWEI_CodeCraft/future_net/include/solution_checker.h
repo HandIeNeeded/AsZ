@@ -37,6 +37,10 @@ int SolutionChecker::Init(Graph<int, int, int, int>* pGraph) {
 }
 
 int SolutionChecker::IsCorrect(const std::vector<Edge<int, int>>& answer) {
+    if (!mpGraph->mIsSolutionExist) {
+        LOG << "[SolutionChecker]: Can't find a solution for this case!!! Quit without check." << std::endl;
+        return ASZ_SUCC;
+    }
     //no edge
     if (answer.size() == 0) {
         return ASZ_SOLUTION_CHECKER_NO_EDGE_ERROR;

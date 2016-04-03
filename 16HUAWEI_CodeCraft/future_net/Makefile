@@ -11,7 +11,6 @@ bin/puzzle_solver_asz: src/puzzle_solver_asz.cc include/puzzle_solver.h include/
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -o $@ $< ./lib/libstdc++.a
 
-
 .PHONY: clean
 clean:
 	rm -f bin/*.o
