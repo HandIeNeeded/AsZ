@@ -15,55 +15,75 @@
 class DataIOHelper {
 public:
     static int Init(const std::string& input, const std::string& output) {
+        std::cerr << "enter init" << std::endl;
         Close();
-        mFileInStream.open(input.c_str());
-        mFileOutStream.open(output.c_str());
+        // mFileInStream.open(input.c_str());
+        // mFileOutStream.open(output.c_str());
+        ifptr = fopen(input.c_str(), "r");
+        ofptr = fopen(output.c_str(), "w");
         return ASZ_SUCC;
     }
 
     static int InitInput(const std::string& input) {
-        mFileInStream.close();
+        // mFileInStream.close();
+        // LOG << "Open input file: " << input << std::endl;
+        // mFileInStream.open(input.c_str());
+        if (ifptr != NULL) fclose(ifptr);
         LOG << "Open input file: " << input << std::endl;
-        mFileInStream.open(input.c_str());
+        ifptr = fopen(input.c_str(), "r");
         return ASZ_SUCC;
     }
 
     static int InitOutput(const std::string& output) {
-        mFileOutStream.close();
+        // mFileOutStream.close();
+        // LOG << "Open output file: " << output << std::endl;
+        // mFileOutStream.open(output.c_str());
+        if (ofptr != NULL) fclose(ofptr);
         LOG << "Open output file: " << output << std::endl;
-        mFileOutStream.open(output.c_str());
+        ofptr = fopen(output.c_str(), "w");
         return ASZ_SUCC;
     }
 
     static int Close() {
-        mFileInStream.close();
-        mFileOutStream.close();
+        // mFileInStream.close();
+        // mFileOutStream.close();
+        if (ifptr != NULL) fclose(ifptr);
+        if (ofptr != NULL) fclose(ofptr);
         return ASZ_SUCC;
     }
 
     static bool IsReachEoF() {
-        return mFileInStream.eof();
+    	char c;
+    	if (fscanf(ifptr, "%c", &c) == EOF)
+    		return true;
+    	fseek(ifptr, -1, SEEK_CUR);
+    	return false;
+        // return mFileInStream.eof();
     }
 
     static inline char ReadOneChar() {
         char c;
-        mFileInStream >> c;
+        // mFileInStream >> c;
+        fscanf(ifptr, "%c", &c);
         return c;
     }
 
     static inline int ReadOneInteger() {
         int x = 0;
-        mFileInStream >> x;
-        mFileInStream.ignore(1, '\n');
+        // mFileInStream >> x;
+        // mFileInStream.ignore(1, '\n');
+        fscanf(ifptr, "%d%*c", &x);
         return x;
     }
 
     static inline void WriteOneString(const std::string& str) {
-        mFileOutStream << str;
+        // mFileOutStream << str;
+        fprintf(ofptr, "%s", str.c_str());
     }
 
     static inline void WriteOneChar(char c) {
-        mFileOutStream << c;
+        // mFileOutStream << c;
+        fprintf(ofptr, "%c", c);
     }
 
     static inline void WriteOneInterger(int x) {
@@ -77,10 +97,15 @@ public:
     }
 
 private:
-    static std::ifstream mFileInStream;
-    static std::ofstream mFileOutStream;
+    // static std::ifstream mFileInStream;
+    // static std::ofstream mFileOutStream;
+    static FILE* ifptr;
+    static FILE* ofptr;
 };
 
-std::ifstream DataIOHelper::mFileInStream;
-std::ofstream DataIOHelper::mFileOutStream;
+FILE* DataIOHelper::ifptr;
+FILE* DataIOHelper::ofptr;
+
+// std::ifstream DataIOHelper::mFileInStream;
+// std::ofstream DataIOHelper::mFileOutStream;
 #endif /* _DATA_IO_HELPER_H_ */
