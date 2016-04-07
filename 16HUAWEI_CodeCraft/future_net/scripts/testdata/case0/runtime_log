@@ -1,0 +1,8 @@
+[include/data_io_helper.h] Line: 26: Open input file: ./testdata/case0/topo.csv
+[include/data_io_helper.h] Line: 26: Open input file: ./testdata/case0/demand.csv
+[include/puzzle_solver.h] Line: 93: [PuzzleSolver]: Find a path of length 4.
+[include/data_type.h] Line: 115: Path of nodes: 0, 2, 3, 1
+[include/puzzle_solver.h] Line: 100: [Solution checker]: answer is CORRECT!!!
+[include/data_io_helper.h] Line: 33: Open output file: ./testdata/case0/result.csv
+Puzzle solved!!!
+[include/time_utility.h] Line: 63: Time Monitor: [asz] use 0.001293sec.
