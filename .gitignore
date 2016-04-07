@@ -5,7 +5,7 @@
 16HUAWEI_CodeCraft/future_net/bin/
 
 # ignore testcase
-16HUAWEI_CodeCraft/future_net/scripts/*testdata*/
+# 16HUAWEI_CodeCraft/future_net/scripts/*testdata*/
 
 # ignore compressed file
 *.tar.gz
