@@ -6,6 +6,7 @@
 
 #IncludeRegexTransform: 
 
+<<<<<<< HEAD
 /home/haoran/Desktop/HUAWEI/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/future_net.cpp
 route.h
 /home/haoran/Desktop/HUAWEI/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/route.h
@@ -17,6 +18,19 @@ stdio.h
 /home/haoran/Desktop/HUAWEI/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/stdio.h
 
 /home/haoran/Desktop/HUAWEI/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/io.cpp
+=======
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/future_net.cpp
+route.h
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/route.h
+lib_io.h
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/lib_io.h
+lib_time.h
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/lib_time.h
+stdio.h
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/stdio.h
+
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/io.cpp
+>>>>>>> 0ee340f39055b6e0c07f8b53c1546df00d827442
 stdio.h
 -
 stdlib.h
@@ -36,6 +50,7 @@ unistd.h
 signal.h
 -
 
+<<<<<<< HEAD
 /home/haoran/Desktop/HUAWEI/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/lib/lib_io.h
 
 /home/haoran/Desktop/HUAWEI/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/lib/lib_record.h
@@ -51,4 +66,21 @@ stdio.h
 -
 
 /home/haoran/Desktop/HUAWEI/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/route.h
+=======
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/lib/lib_io.h
+
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/lib/lib_record.h
+
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/lib/lib_time.h
+
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/route.cpp
+route.h
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/route.h
+lib_record.h
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/lib_record.h
+stdio.h
+-
+
+/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/future_net/route.h
+>>>>>>> 0ee340f39055b6e0c07f8b53c1546df00d827442
 
