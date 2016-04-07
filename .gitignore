@@ -1,0 +1,11 @@
+# ignore problem description and sdk
+16HUAWEI_CodeCraft/Problem/
+
+# ignore /bin
+16HUAWEI_CodeCraft/future_net/bin/
+
+# ignore testcase
+16HUAWEI_CodeCraft/future_net/scripts/*testdata*/
+
+# ignore compressed file
+*.tar.gz

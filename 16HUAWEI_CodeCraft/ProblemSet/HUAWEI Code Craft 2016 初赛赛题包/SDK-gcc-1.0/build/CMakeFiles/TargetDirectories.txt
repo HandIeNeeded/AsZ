@@ -1,7 +1,0 @@
-<<<<<<< HEAD
-/home/haoran/Desktop/HUAWEI/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/build/CMakeFiles/future_net.dir
-=======
-/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/build/CMakeFiles/edit_cache.dir
-/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/build/CMakeFiles/rebuild_cache.dir
-/home/lidinglong/github/AsZ/16HUAWEI_CodeCraft/ProblemSet/HUAWEI Code Craft 2016 初赛赛题包/SDK-gcc-1.0/build/CMakeFiles/future_net.dir
->>>>>>> 0ee340f39055b6e0c07f8b53c1546df00d827442
