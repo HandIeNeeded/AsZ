@@ -71,7 +71,7 @@ int PuzzleSolver::RunOneTest(const std::string& testName, int nodeNumber, int ed
     Save(testName + "/asz_result.csv");
     CHECK_RTN_LOGE(rtn);
     std::cerr << "------------------------------------------------------------------------" << std::endl;
-    
+
     return ASZ_SUCC;
 }
 
