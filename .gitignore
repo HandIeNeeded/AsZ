@@ -4,6 +4,9 @@
 # ignore /bin
 16HUAWEI_CodeCraft/future_net/bin/
 
+# ignore problemset
+16HUAWEI_CodeCraft/ProblemSet
+
 # ignore testcase
 # 16HUAWEI_CodeCraft/future_net/scripts/*testdata*/
 
