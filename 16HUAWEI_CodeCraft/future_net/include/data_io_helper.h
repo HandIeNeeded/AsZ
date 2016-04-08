@@ -17,73 +17,73 @@ public:
     static int Init(const std::string& input, const std::string& output) {
         std::cerr << "enter init" << std::endl;
         Close();
-        // mFileInStream.open(input.c_str());
-        // mFileOutStream.open(output.c_str());
-        ifptr = fopen(input.c_str(), "r");
-        ofptr = fopen(output.c_str(), "w");
+        mFileInStream.open(input.c_str());
+        mFileOutStream.open(output.c_str());
+        // ifptr = fopen(input.c_str(), "r");
+        // ofptr = fopen(output.c_str(), "w");
         return ASZ_SUCC;
     }
 
     static int InitInput(const std::string& input) {
-        // mFileInStream.close();
-        // LOG << "Open input file: " << input << std::endl;
-        // mFileInStream.open(input.c_str());
-        if (ifptr != NULL) fclose(ifptr);
+        mFileInStream.close();
         LOG << "Open input file: " << input << std::endl;
-        ifptr = fopen(input.c_str(), "r");
+        mFileInStream.open(input.c_str());
+        // if (ifptr != NULL) fclose(ifptr);
+        // LOG << "Open input file: " << input << std::endl;
+        // ifptr = fopen(input.c_str(), "r");
         return ASZ_SUCC;
     }
 
     static int InitOutput(const std::string& output) {
-        // mFileOutStream.close();
-        // LOG << "Open output file: " << output << std::endl;
-        // mFileOutStream.open(output.c_str());
-        if (ofptr != NULL) fclose(ofptr);
+        mFileOutStream.close();
         LOG << "Open output file: " << output << std::endl;
-        ofptr = fopen(output.c_str(), "w");
+        mFileOutStream.open(output.c_str());
+        // if (ofptr != NULL) fclose(ofptr);
+        // LOG << "Open output file: " << output << std::endl;
+        // ofptr = fopen(output.c_str(), "w");
         return ASZ_SUCC;
     }
 
     static int Close() {
-        // mFileInStream.close();
-        // mFileOutStream.close();
-        if (ifptr != NULL) fclose(ifptr);
-        if (ofptr != NULL) fclose(ofptr);
+        mFileInStream.close();
+        mFileOutStream.close();
+        // if (ifptr != NULL) fclose(ifptr);
+        // if (ofptr != NULL) fclose(ofptr);
         return ASZ_SUCC;
     }
 
     static bool IsReachEoF() {
-    	char c;
-    	if (fscanf(ifptr, "%c", &c) == EOF)
-    		return true;
-    	fseek(ifptr, -1, SEEK_CUR);
-    	return false;
-        // return mFileInStream.eof();
+    	// char c;
+    	// if (fscanf(ifptr, "%c", &c) == EOF)
+    	// 	return true;
+    	// fseek(ifptr, -1, SEEK_CUR);
+    	// return false;
+        return mFileInStream.eof();
     }
 
     static inline char ReadOneChar() {
         char c;
-        // mFileInStream >> c;
-        fscanf(ifptr, "%c", &c);
+        mFileInStream >> c;
+        // fscanf(ifptr, "%c", &c);
         return c;
     }
 
     static inline int ReadOneInteger() {
         int x = 0;
-        // mFileInStream >> x;
-        // mFileInStream.ignore(1, '\n');
-        fscanf(ifptr, "%d%*c", &x);
+        mFileInStream >> x;
+        mFileInStream.ignore(1, '\n');
+        // fscanf(ifptr, "%d%*c", &x);
         return x;
     }
 
     static inline void WriteOneString(const std::string& str) {
-        // mFileOutStream << str;
-        fprintf(ofptr, "%s", str.c_str());
+        mFileOutStream << str;
+        // fprintf(ofptr, "%s", str.c_str());
     }
 
     static inline void WriteOneChar(char c) {
-        // mFileOutStream << c;
-        fprintf(ofptr, "%c", c);
+        mFileOutStream << c;
+        // fprintf(ofptr, "%c", c);
     }
 
     static inline void WriteOneInterger(int x) {
@@ -97,15 +97,15 @@ public:
     }
 
 private:
-    // static std::ifstream mFileInStream;
-    // static std::ofstream mFileOutStream;
-    static FILE* ifptr;
-    static FILE* ofptr;
+    static std::ifstream mFileInStream;
+    static std::ofstream mFileOutStream;
+    // static FILE* ifptr;
+    // static FILE* ofptr;
 };
 
-FILE* DataIOHelper::ifptr;
-FILE* DataIOHelper::ofptr;
+// FILE* DataIOHelper::ifptr;
+// FILE* DataIOHelper::ofptr;
 
-// std::ifstream DataIOHelper::mFileInStream;
-// std::ofstream DataIOHelper::mFileOutStream;
+std::ifstream DataIOHelper::mFileInStream;
+std::ofstream DataIOHelper::mFileOutStream;
 #endif /* _DATA_IO_HELPER_H_ */

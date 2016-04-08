@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
      if (argc > 0) {
          rtn = asz.Init(argv[1], argv[2]);
          CHECK_RTN_LOGE(rtn);
-         rtn = asz.Solve(false);
+         rtn = asz.Solve(true);
          CHECK_RTN_LOGE(rtn);
          rtn = asz.Save(argv[3]);
          CHECK_RTN_LOGE(rtn);
