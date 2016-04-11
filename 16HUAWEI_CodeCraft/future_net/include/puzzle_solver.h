@@ -53,7 +53,7 @@ int PuzzleSolver::Init(const std::string& graphFile, const std::string& nodeFile
     return ASZ_SUCC;
 }
 
-int PuzzleSolver::RunOneTest(const std::string& testName, int nodeNumber, int edgeNumber) {
+int PuzzleSolver::RunOneTest(const std::string& testName, int nodeNumber, int edgeNumber) {    
     
     TestDataGenerator testGenerator;
     testGenerator.SetNodeNumber(nodeNumber);

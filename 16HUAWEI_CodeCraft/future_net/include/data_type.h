@@ -192,24 +192,24 @@ namespace graph {
         }
 
         int FindPath(TypeEdge1 currentNode, TypeEdge2& pathLength) {
-            if (mMarkMap.test(currentNode) || mCounter == 0)
+            if (mCounter == 0)
                 return ASZ_SUCC;
             mCounter--;
             mMarkMap.set(currentNode);
             if (currentNode == mSink) {
                 if ((mMarkMap & mKeyNodesMap) == mKeyNodesMap) {
-                	mPaths.assign(mCurrentPaths.begin(), mCurrentPaths.end());
                     mIsSolutionExist = true;
+                	mPaths.assign(mCurrentPaths.begin(), mCurrentPaths.end());
                     mPathLength = pathLength;
-                    return ASZ_SUCC;
-                } else {
-                    mMarkMap.reset(currentNode);
-                    return ASZ_SUCC;
                 }
+                mMarkMap.reset(currentNode);
+                return ASZ_SUCC;
             }
-            for (auto &edge: mEdges[currentNode]) {
+            for (auto& edge: mEdges[currentNode]) {
                 TypeEdge1 nextNode = edge.end;
                 TypeEdge2 length = edge.length;
+                if (mMarkMap.test(nextNode) || pathLength + length >= mPathLength)
+                	continue;
                 pathLength += length;
                 mCurrentPaths.push_back(edge);
                 FindPath(nextNode, pathLength);
