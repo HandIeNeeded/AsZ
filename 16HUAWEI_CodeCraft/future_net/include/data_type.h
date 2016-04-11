@@ -52,11 +52,14 @@ namespace graph {
             mEdges.clear();
             mNodes.clear();
             mKeyNodes.clear();
+            mCurrentPaths.clear();
             mPaths.clear();
             mNode = mEdge = 0;
             mSource = mSink = 0;
+            mCounter = (int)1e7;
             mMarkMap.reset();
             mKeyNodesMap.reset();
+            mPathLength = MAX_NODE * 20;
             return ASZ_SUCC;
         }
 
@@ -138,6 +141,7 @@ namespace graph {
             InitAnswer();
             pathLength = 0;
             FindPath(mSource, pathLength);
+            pathLength = mPathLength;
             return ASZ_SUCC;
         }
 
@@ -162,10 +166,16 @@ namespace graph {
         int mNode, mEdge;
         //start point, destination
         int mSource, mSink;
+        //shortest path length
+        int mPathLength;
+        //counter restrict dfs time
+        int mCounter;
         std::vector<Node<TypeNode1, TypeNode2>> mNodes;
         std::vector<std::vector<Edge<TypeEdge1, TypeEdge2>>> mEdges;
         //key nodes, have to cover
         std::vector<int> mKeyNodes;
+        //current path
+        std::vector<Edge<TypeEdge1, TypeEdge2>> mCurrentPaths;
         //answer path
         std::vector<Edge<TypeEdge1, TypeEdge2>> mPaths;
         //is visited mark map
@@ -182,12 +192,15 @@ namespace graph {
         }
 
         int FindPath(TypeEdge1 currentNode, TypeEdge2& pathLength) {
-            if (mMarkMap.test(currentNode))
+            if (mMarkMap.test(currentNode) || mCounter == 0)
                 return ASZ_SUCC;
+            mCounter--;
             mMarkMap.set(currentNode);
             if (currentNode == mSink) {
                 if ((mMarkMap & mKeyNodesMap) == mKeyNodesMap) {
+                	mPaths.assign(mCurrentPaths.begin(), mCurrentPaths.end());
                     mIsSolutionExist = true;
+                    mPathLength = pathLength;
                     return ASZ_SUCC;
                 } else {
                     mMarkMap.reset(currentNode);
@@ -198,11 +211,9 @@ namespace graph {
                 TypeEdge1 nextNode = edge.end;
                 TypeEdge2 length = edge.length;
                 pathLength += length;
-                mPaths.push_back(edge);
+                mCurrentPaths.push_back(edge);
                 FindPath(nextNode, pathLength);
-                if (mIsSolutionExist)
-                    return ASZ_SUCC;
-                mPaths.pop_back();
+                mCurrentPaths.pop_back();
                 pathLength -= length;
             }
             mMarkMap.reset(currentNode);

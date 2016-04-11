@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
     PuzzleSolver asz;
     TimeHelper::Init();
     TimeHelper::CumulateStart("asz");
-     if (argc > 0) {
+     if (argc > 1) {
          rtn = asz.Init(argv[1], argv[2]);
          CHECK_RTN_LOGE(rtn);
          rtn = asz.Solve(true);

@@ -54,8 +54,7 @@ int PuzzleSolver::Init(const std::string& graphFile, const std::string& nodeFile
 }
 
 int PuzzleSolver::RunOneTest(const std::string& testName, int nodeNumber, int edgeNumber) {
-    // cannot use the static
-    // int rtn = TestDataGenerator::GenOneDataSet(testName);
+    
     TestDataGenerator testGenerator;
     testGenerator.SetNodeNumber(nodeNumber);
     testGenerator.SetEdgeNumber(edgeNumber);
@@ -88,8 +87,8 @@ int PuzzleSolver::RunTests(int n) {
 
 int PuzzleSolver::Solve(bool needCheckAnswer) {
     int answer = 0;
-    //mGraph.BruteForce(answer);
-    mGraph.AStarSearch(answer);
+    mGraph.BruteForce(answer);
+    // mGraph.AStarSearch(answer);
     if (mGraph.mIsSolutionExist) {
         LOG << "[PuzzleSolver]: Find a path of length " << answer << "." << std::endl;
         mGraph.PrintNodePath();

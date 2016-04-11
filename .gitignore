@@ -8,7 +8,7 @@
 16HUAWEI_CodeCraft/ProblemSet
 
 # ignore testcase
-# 16HUAWEI_CodeCraft/future_net/scripts/*testdata*/
+16HUAWEI_CodeCraft/future_net/scripts/*test*/
 
 # ignore compressed file
 *.tar.gz
