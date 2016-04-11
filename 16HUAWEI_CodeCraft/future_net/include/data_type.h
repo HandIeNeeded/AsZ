@@ -83,6 +83,15 @@ namespace graph {
             }
             mNode = mMarkMap.count();
             mMarkMap.reset();
+
+            //greedy
+            for (TypeEdge1 node = 0; node < mNode; node++) {
+            	for (unsigned int i = 0; i < mEdges[node].size(); i++)
+            		for (unsigned int j = i + 1; j < mEdges[node].size(); j++)
+            			if (mEdges[node][i].length > mEdges[node][j].length)
+            				std::swap(mEdges[node][i], mEdges[node][j]);
+            }
+
             return ASZ_SUCC;
         }
 
